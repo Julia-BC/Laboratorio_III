@@ -1,0 +1,156 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family:Georgia, 'Times New Roman', Times, serif, sans-serif;
+}
+ html, body {
+  height: 100%;
+ }
+
+ h2 {
+      color: white;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+.container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.left-side {
+  flex: 1;
+  background-color: #7f91aa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.right-side {
+  flex: 1;
+  background-color: #3d405b;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* joga os itens para cima e baixo */
+  align-items: center;
+  padding: 20px 90px;
+}
+
+
+.logo-lotus {
+  width: 300px;
+  height: auto;
+}
+
+.botoes  {
+  display: flex;
+  flex-direction:column;
+  gap:  20px; /* espaço entre os botões */
+  align-items: center;
+  margin-bottom:center;
+  margin: auto 0;
+  width: 100%;
+}
+
+.btn {
+  background-color: white;
+  color: #3d405b;
+  border:#7f91aa 2px solid;
+  text-decoration: none;
+  text-align: center;
+  padding: 15px 20px;
+  font-size: 25px;
+  border-radius: 80px;
+  cursor: pointer;
+  width: 300px;
+  transition:all 0.3s ease;
+}
+
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+  background: transparent !important;
+  border: none;
+  border-bottom: 2px solid white;
+  color: white;
+  width: 320px;
+  font-size: 18px;
+  padding: 10px 5px;
+  margin-bottom: 30px;
+  outline: none;
+}
+
+/* Remove fundo branco no autofill do Chrome */
+.login-form input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: white !important;
+  background: transparent !important;
+  color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.btn:hover {
+  background-color: #7f91aa;
+  color: white;
+  border: #3d405b 2px solid;
+}
+
+.form-cadastro,
+#form-cliente {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Espaço entre os campos */
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+#form-empresa {
+  display: flex;
+  flex-direction: space-between;
+  gap: 16px; /* Espaço entre os campos */
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.form-cadastro input,
+.form-cadastro select {
+  background: transparent !important;
+  color: white;
+  border: none;
+  border-bottom: 2px solid white;
+  font-size: 16px;
+  padding: 8px 5px;
+  outline: none;
+  width: 100%; /* Faz o input ocupar toda a largura do container */
+  box-sizing: border-box;
+}
+
+/* Deixa as opções do select com fundo escuro e texto branco */
+.form-cadastro select option {
+  background: white;
+  color: #3d405b;
+}
+
+/* Remove fundo branco no autofill do Chrome */
+.form-cadastro input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: white !important;
+  background: transparent !important;
+  color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.form-cadastro input::placeholder {
+  color: white;
+  opacity: 0.6;
+}
+
+
+
+
+
+
