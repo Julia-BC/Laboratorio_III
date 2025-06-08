@@ -61,10 +61,10 @@
   text-decoration: none;
   text-align: center;
   padding: 15px 20px;
-  font-size: 25px;
+  font-size: 20px;
   border-radius: 80px;
   cursor: pointer;
-  width: 300px;
+  width: 150px;
   transition:all 0.3s ease;
 }
 
@@ -148,6 +148,8 @@
   color: white;
   opacity: 0.6;
 }
+
+
 
 
 
