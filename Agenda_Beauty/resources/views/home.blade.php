@@ -6,6 +6,17 @@
   <title>HOME AGENDA BEAUTY</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
+<style>
+
+p {
+  color: white;
+  font-size: 25px;
+  margin-top: 10px;
+}
+
+</style>
+
 <body>
   <div class="container">
     <div class="left-side">
@@ -15,6 +26,10 @@
   <div class="lotus-wrapper">
     <img src="imagens/florLotus.png" alt="Flor de Lótus" class="logo-lotus">
   </div>
+  <p>Bem-vinda ao Agenda Beauty.</p>
+  <p>Agende seu horário com facilidade</p>
+  <p>e aproveite nossos serviços!</p>
+
   <div class="botoes">
     <a href="login.html"><button class="btn">Fazer login</button></a>
     <a href="cadastro.html"><button class="btn">Cadastre-se</button></a>
