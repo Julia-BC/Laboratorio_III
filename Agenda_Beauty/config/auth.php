@@ -40,6 +40,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'cliente' => [
+            'driver' => 'session',
+            'provider' => 'clientes',
+        ],
+
+        'empresa' => [
+            'driver' => 'session',
+            'provider' => 'empresas',
+        ],
     ],
 
     /*
@@ -65,10 +75,14 @@ return [
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'clientes' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Cliente::class,
+        ],
+        'empresas' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Empresa::class,
+        ],
     ],
 
     /*
@@ -92,11 +106,25 @@ return [
 
     'passwords' => [
         'users' => [
-            'provider' => 'users',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
+            'provider' => 'users', // Qual provider de usuários usar
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'), // Nome da tabela de tokens
+            'expire' => 60, // Tempo de validade do token em minutos
+            'throttle' => 60, // Tempo de espera para novo token
         ],
+
+        'clientes' => [
+            'provider' => 'clientes', // Qual provider de clientes usar
+            'table' => env('AUTH_PASSWORD_RESET_CLIENTES_TABLE', 'password_reset_clientes'), // Nome da tabela de tokens para clientes
+            'expire' => 60, // Tempo de validade do token em minutos
+            'throttle' => 60, // Tempo de espera para novo token
+        ],
+        'empresas' => [
+            'provider' => 'empresas', // Qual provider de empresas usar
+            'table' => env('AUTH_PASSWORD_RESET_EMPRESAS_TABLE', 'password_reset_empresas'), // Nome da tabela de tokens para empresas
+            'expire' => 60, // Tempo de validade do token em minutos
+            'throttle' => 60, // Tempo de espera para novo token
+        ],
+
     ],
 
     /*

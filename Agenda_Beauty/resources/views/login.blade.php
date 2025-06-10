@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tela de Login</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 
 <style>
@@ -90,11 +90,11 @@ p a:hover {
 <body>
     <div class="container">
         <div class="left-side">
-            <img src="imagens/AgendaBeauty.png" alt="Logo Agenda Beauty" class="logo-ab">
+            <img src="{{ asset('imagens/AgendaBeauty.png') }}" alt="Logo Agenda Beauty" class="logo-ab">
         </div>
         <div class="right-side">
             <div class="lotus-wrapper">
-                <img src="imagens/florLotus.png" alt="Flor de Lótus" class="logo-lotus">
+                <img src="{{ asset('imagens/florLotus.png') }}" alt="Flor de Lótus" class="logo-lotus">
             </div>
             <h2 class="titulo-login">LOGIN</h2>
             <form action="#" method="post" class="login-form" action="BD/login.php">
@@ -111,7 +111,7 @@ p a:hover {
                 <button type="submit" class="btn">Fazer login</button>
                 </div>
             </form>
-            <p>Não tem cadastro? <a href="cadastro.html">Clique aqui.</a></p>
+            <p>Não tem cadastro? <a href="{{ route('cadastro') }}">Clique aqui.</a></p>
         </div>
     </div>
 </body>
