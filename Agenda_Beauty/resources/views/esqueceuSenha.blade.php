@@ -31,7 +31,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        padding: 40px 90px 0 90px;
+        padding: 40px 90px  90px;
         background-color: #3d405b;
         flex: 1;
     }
@@ -85,11 +85,10 @@
     <div class="right-side">
       <img src="/frontEnd/imagens/florLotus.png" alt="Flor de Lótus" class="logo-lotus">
       <h2>Recuperação de Senha</h2>
-      <form class="form-cadastro">
-        <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
+      <form class="form-cadastro" action="/esqueci-senha" method="POST">
+        <input type="email" name="email" placeholder="Digite seu e-mail" required>
         <button type="submit" class="btn">Enviar</button>
       </form>
-      <p>Não tem uma conta? <a href="cadastro.html">Cadastre-se</a></p>
     </div>
   </div>
 </body>
