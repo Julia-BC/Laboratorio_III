@@ -11,14 +11,17 @@ return new class extends Migration
      */
    public function up()
 {
+    // Criação da tabela 'clientes'
     Schema::create('clientes', function (Blueprint $table) {
-        $table->id();
+        $table->id(); // Cria a coluna 'id' como chave primária e auto-incremento
         $table->string('nome');
         $table->string('cpf')->unique();
         $table->string('email')->unique();
         $table->string('telefone');
         $table->string('senha');
-        $table->timestamps();
+        $table->rememberToken(); // Habilitar opção de "lembrar de mim"
+        $table->timestamp('email_verified_at')->nullable(); // Registra quando o e-mail foi verificado
+        $table->timestamps(); // Cria as colunas 'created_at' e 'updated_at'
     });
 }
     /**

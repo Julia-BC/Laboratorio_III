@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up()
 {
+    // Criação da tabela 'empresas'
     Schema::create('empresas', function (Blueprint $table) {
-        $table->id();
+        $table->id(); // Cria a coluna 'id' como chave primária e auto-incremento
         $table->string('nome');
         $table->string('cnpj')->unique();
         $table->string('email')->unique();
@@ -22,7 +23,9 @@ return new class extends Migration
         $table->string('bairro');
         $table->string('complemento')->nullable();
         $table->string('senha');
-        $table->timestamps();
+        $table->rememberToken(); // habilitar opção de "lembrar de mim"
+        $table->timestamp('email_verified_at')->nullable(); // registra quando o e-mail foi verificado
+        $table->timestamps(); // cria as colunas 'created_at' e 'updated_at'
     });
 }
 

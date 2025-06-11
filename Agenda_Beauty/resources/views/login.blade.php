@@ -97,12 +97,13 @@ p a:hover {
                 <img src="{{ asset('imagens/florLotus.png') }}" alt="Flor de Lótus" class="logo-lotus">
             </div>
             <h2 class="titulo-login">LOGIN</h2>
-            <form action="#" method="post" class="login-form" action="BD/login.php">
+            <form method="POST" action="{{ route('cliente.login.submit') }}" class="login-form">
+               @csrf
                 <div>
                 <input type="email" name="email" placeholder="Digite seu e-mail" required>
                 </div>
                 <div>
-                <input type="password" name="password" placeholder="Digite sua senha" required>
+                <input type="password" name="senha" placeholder="Digite sua senha" required>
                 </div>
                 <div class="esqueceu_senha">
                 <a href="esqueceuSenha.html">Esqueceu sua senha?</a>
