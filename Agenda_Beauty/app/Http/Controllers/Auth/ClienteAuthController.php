@@ -28,8 +28,9 @@ class ClienteAuthController extends Controller
             'cpf' => 'required|string|unique:clientes,cpf',
             'email' => 'required|string|email|max:255|unique:clientes,email',
             'telefone' => 'required|string|max:20',
-            'senha' => 'required|string|min:8|confirmed',
-        ], [
+            'senha' => 'required|string|min:6|confirmed',
+        ], [ 
+            // mensagens de erro personalizadas
             'nome.required' => 'O nome é obrigatório.',
             'cpf.required' => 'O CPF é obrigatório.',
             'email.required' => 'O e-mail é obrigatório.',
@@ -77,6 +78,12 @@ class ClienteAuthController extends Controller
         // se falhar, retorna com erro
         return back()->withErrors(['email' => 'Credenciais inválidas para cliente.']);
     }
+
+
+    public function index()
+{
+    return view('cliente.dashboard'); // ajuste o nome da view conforme seu projeto
+}
 
     // realiza o logout do cliente
     public function logout()

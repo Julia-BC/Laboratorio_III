@@ -32,8 +32,9 @@ class EmpresaAuthController extends Controller
             'cidadeEmpresa' => 'required|string|max:100',
             'bairroEmpresa' => 'required|string|max:100',
             'complementoEmpresa' => 'nullable|string|max:255',
-            'senhaEmpresa' => 'required|string|min:8|confirmed',
+            'senhaEmpresa' => 'required|string|min:6|confirmed',
         ], [
+            // Mensagens de erro personalizadas
             'nomeEmpresa.required' => 'O nome da empresa é obrigatório.',
             'cnpj.required' => 'O CNPJ é obrigatório.',
             'emailEmpresa.required' => 'O e-mail da empresa é obrigatório.',

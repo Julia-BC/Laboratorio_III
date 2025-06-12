@@ -37,6 +37,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('empresas');
+        Schema::table('empresas', function (Blueprint $table) {
+            $table->dropColumn(['password_reset_token', 'password_reset_sent_at']);
+        }); // Remove as colunas de redefinição de senha
+        
+        Schema::dropIfExists('empresas'); // Remove a tabela 'empresas'
     }
 };

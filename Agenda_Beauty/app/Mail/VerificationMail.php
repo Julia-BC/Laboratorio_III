@@ -9,14 +9,16 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
+
+//// Classe para enviar o e-mail de verificação de cadastro
 class VerificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user; //vai conter o usuário que está sendo verificado
+    public $user; //Armazena o usuário que receberá o e-mail de verificação
 
     /**
-     * Create a new message instance.
+     * Construtor: recebe o usuário que será verificado.
      */
     public function __construct($user)
     {
@@ -24,7 +26,7 @@ class VerificationMail extends Mailable
     }
 
     /**
-     * Get the message envelope.
+     * Define o envelope (assunto) do e-mail.
      */
     public function envelope(): Envelope
     {
@@ -34,12 +36,12 @@ class VerificationMail extends Mailable
     }
 
     /**
-     * Get the message content definition.
+     * Define o conteúdo do e-mail (view a ser usada).
      */
     public function content(): Content
     {
         return new Content(
-            view: 'emails.verification',
+            view: 'emails.verification', //// View ->  resources/views/emails/verification.blade.php
         );
     }
 

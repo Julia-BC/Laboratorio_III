@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nova Senha</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
     <style>
@@ -83,24 +83,32 @@
 
 </style>
 
+<!-- Adicionando o SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+   <link rel="shortcut icon" href="{{ asset('imagens/favicon.ico') }}" type="image/x-icon">
+
 <body>
   <div class="container">
     <div class="left-side">
-      <img src="/frontEnd/imagens/AgendaBeauty.png" alt="Logo" class="AgendaBeauty">
+      <img src="{{ asset('imagens/AgendaBeauty.png') }}" alt="Logo" class="AgendaBeauty">
     </div>
     <div class="right-side">
-      <img src="/frontEnd/imagens/florLotus.png" alt="Flor de Lótus" class="logo-lotus">
+      <img src="{{ asset('imagens/florLotus.png') }}" alt="Flor de Lótus" class="logo-lotus">
       <h2>Nova Senha</h2>
-      <form class="form-cadastro" action="/confirmarSenhaNova" method="POST">
-        <input type="hidden" name="token" value="{{token}}">
+      <form class="form-cadastro" action="{{ route('password.update') }}" method="POST">
+        @csrf
+        <input type="hidden" name="token" value="{{ $token }}">
+        <input type="hidden" name="email" value="{{ $email }}">
+
 
         <div class="input-wrapper">
-          <input type="password" id="novaSenha" name="novaSenha" placeholder="Digite sua nova senha" required>
+          <input type="password" id="novaSenha" name="password" placeholder="Digite sua nova senha" required>
           <i class="fa-solid fa-eye toggle-senha" onclick="toggleSenha('novaSenha', this)"></i>
         </div>
 
         <div class="input-wrapper">
-          <input type="password" id="confirmarSenha" name="confirmarSenha" placeholder="Confirme sua nova senha" required>
+          <input type="password" id="confirmarSenha" name="password_confirmation" placeholder="Confirme sua nova senha" required>
           <i class="fa-solid fa-eye toggle-senha" onclick="toggleSenha('confirmarSenha', this)"></i>
         </div>
 
@@ -118,5 +126,8 @@
       icon.classList.toggle("fa-eye-slash");
     }
   </script>
+
+  @include('components.alerts') <!-- Incluindo o componente de alertas -->
+
 </body>
 </html>
