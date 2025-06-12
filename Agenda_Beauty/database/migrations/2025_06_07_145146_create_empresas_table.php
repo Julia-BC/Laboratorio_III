@@ -23,9 +23,12 @@ return new class extends Migration
         $table->string('bairro');
         $table->string('complemento')->nullable();
         $table->string('senha');
+        $table->string('verification_token')->nullable();// Token para verificação de e-mail
         $table->rememberToken(); // habilitar opção de "lembrar de mim"
         $table->timestamp('email_verified_at')->nullable(); // registra quando o e-mail foi verificado
         $table->timestamps(); // cria as colunas 'created_at' e 'updated_at'
+        $table->string('password_reset_token')->nullable(); // Token para redefinição de senha
+        $table->timestamp('password_reset_sent_at')->nullable(); // Data de envio do token de redefinição de senha
     });
 }
 

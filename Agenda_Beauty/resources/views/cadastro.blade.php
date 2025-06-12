@@ -50,6 +50,9 @@
 </style>
 
 <script>
+  const clienteRegisterRoute = "{{ route('cliente.register.submit') }}";
+  const empresaRegisterRoute = "{{ route('empresa.register.submit') }}";
+
   function mostrarFormulario() {
     const tipo = document.getElementById('tipo').value;
     const clienteFields = document.querySelectorAll('#form-cliente input');
@@ -61,17 +64,23 @@
       document.getElementById('form-empresa').style.display = 'none';
       clienteFields.forEach(input => input.required = true);
       empresaFields.forEach(input => input.required = false);
-      form.action = "{{ route('cliente.register.submit') }}";
+      form.action = clienteRegisterRoute;
     } else if (tipo === 'empresa') {
       document.getElementById('form-cliente').style.display = 'none';
       document.getElementById('form-empresa').style.display = 'block';
       clienteFields.forEach(input => input.required = false);
       empresaFields.forEach(input => input.required = true);
-      form.action = "{{ route('empresa.register.submit') }}";
+      form.action = empresaRegisterRoute;
     }
   }
   window.onload = mostrarFormulario;
 </script>
+
+
+<!-- Adicionando o SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+   <link rel="shortcut icon" href="{{ asset('imagens/favicon.ico') }}" type="image/x-icon">
 </head>
 
 
@@ -87,14 +96,14 @@
       
       <form class="form-cadastro" id="formCadastro" action="{{ route('cliente.register.submit') }}" method="POST">
         @csrf
-  <div>
-    <label for="tipo">Selecione o tipo de cadastro:</label>
-    <select id="tipo" name="tipo" required onchange="mostrarFormulario()">
-      <option value="cliente">Cliente</option>
-      <option value="empresa">Empresa</option>
-    </select>
-  </div>
-
+        <div>
+          <label for="tipo">Selecione o tipo de cadastro:</label>
+          <select id="tipo" name="tipo" required onchange="mostrarFormulario()">
+            <option value="cliente">Cliente</option>
+            <option value="empresa">Empresa</option>
+          </select>
+        </div>
+        
   <!-- FORMULÁRIO DO CLIENTE -->
   <div id="form-cliente">
     <input type="text" name="nome" placeholder="Digite seu nome" required>
@@ -104,7 +113,7 @@
     <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
     <input type="password" id="senha_confirmation" name="senha_confirmation" placeholder="Confirme sua senha" required>
   </div>
-
+  
   <!-- FORMULÁRIO EMPRESA -->
   <div id="form-empresa" style="display: none;">
     <input type="text" id="nomeEmpresa" name="nomeEmpresa" placeholder="Digite a Razão Social / nome" required>
@@ -128,12 +137,15 @@
     <input type="password" id="senhaFuncionario" name="senhaFuncionario" placeholder="Digite a senha do funcionário">
     <input type="password" id="confirmarSenhaFuncionario" name="confirmarSenhaFuncionario" placeholder="Confirme a senha do funcionário">
   </div>-->
-
+  
   <div class="botoes">
     <button type="submit" class="btn">Cadastrar</button>
   </div>
 </form>
-    </div>
-  </div>
+</div>
+</div>
+
+@include('components.alerts') <!-- Incluindo o componente de alertas -->
+
 </body>
 </html>

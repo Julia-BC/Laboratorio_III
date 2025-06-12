@@ -7,9 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Empresa;
+use App\Traits\VerifiesEmail; // Importa o trait para verificação de e-mail
 
 class EmpresaAuthController extends Controller
 {
+    use VerifiesEmail; // Usa o trait para verificação de e-mail
+
     // Exibe o formulário de cadastro da empresa
     public function showRegisterForm()
     {
@@ -30,6 +33,18 @@ class EmpresaAuthController extends Controller
             'bairroEmpresa' => 'required|string|max:100',
             'complementoEmpresa' => 'nullable|string|max:255',
             'senhaEmpresa' => 'required|string|min:8|confirmed',
+        ], [
+            'nomeEmpresa.required' => 'O nome da empresa é obrigatório.',
+            'cnpj.required' => 'O CNPJ é obrigatório.',
+            'emailEmpresa.required' => 'O e-mail da empresa é obrigatório.',
+            'telefoneEmpresa.required' => 'O telefone da empresa é obrigatório.',
+            'cepEmpresa.required' => 'O CEP da empresa é obrigatório.',
+            'cidadeEmpresa.required' => 'A cidade da empresa é obrigatória.',
+            'bairroEmpresa.required' => 'O bairro da empresa é obrigatório.',
+            'senhaEmpresa.required' => 'A senha é obrigatória.',
+            'senhaEmpresa.confirmed' => 'As senhas não conferem.',
+            'cnpj.unique' => 'Este CNPJ já está cadastrado.',
+            'emailEmpresa.unique' => 'Este e-mail já está cadastrado.',
         ]);
 
         // Criação da empresa no banco de dados
@@ -44,8 +59,8 @@ class EmpresaAuthController extends Controller
             'complemento' => $request->complementoEmpresa,
             'senha' => Hash::make($request->senhaEmpresa), // Criptografa a senha
         ]);
-        // Envia link de verificação por e-mail (assumindo uso de `MustVerifyEmail`)
-        $empresa->sendEmailVerificationNotification(); // Envia o e-mail de verificação
+        
+        $this->sendVerificationEmail($empresa); // Envia o e-mail de verificação
 
         return redirect()->route('empresa.login')->with('success', 'Cadastro empresa realizado! Faça login.');
     }
@@ -67,11 +82,16 @@ class EmpresaAuthController extends Controller
 
         // Tenta autenticar a empresa com o guard 'empresa'
         if (Auth::guard('empresa')->attempt(['email' => $credentials['emailEmpresa'], 'password' => $credentials['senhaEmpresa']])) {
-            return redirect()->route('empresa.dashboard')->with('success', 'Login empresa realizado!');
+        $empresa = Auth::guard('empresa')->user();
+        if (is_null($empresa->email_verified_at)) {
+            Auth::guard('empresa')->logout();
+            return back()->withErrors(['emailEmpresa' => 'Você precisa verificar seu e-mail antes de acessar o sistema.']);
         }
-
-        return back()->withErrors(['emailEmpresa' => 'Credenciais inválidas para empresa.']);
+        return redirect()->route('empresa.dashboard')->with('success', 'Login empresa realizado!');
     }
+
+    return back()->withErrors(['emailEmpresa' => 'Credenciais inválidas para empresa.']);
+}
 
     // Realiza o logout da empresa
     public function logout()

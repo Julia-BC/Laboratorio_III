@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Esqueceu Senha</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 
 <style>
@@ -80,12 +80,13 @@
 <body>
   <div class="container">
     <div class="left-side">
-      <img src="/frontEnd/imagens/AgendaBeauty.png" alt="Logo" class="AgendaBeauty">
+      <img src="{{ asset('imagens/AgendaBeauty.png') }}" alt="Logo" class="AgendaBeauty">
     </div>
     <div class="right-side">
-      <img src="/frontEnd/imagens/florLotus.png" alt="Flor de Lótus" class="logo-lotus">
+      <img src="{{ asset('imagens/florLotus.png') }}" alt="Flor de Lótus" class="logo-lotus">
       <h2>Recuperação de Senha</h2>
-      <form class="form-cadastro" action="/esqueci-senha" method="POST">
+      <form class="form-cadastro" action="{{ route('password.email') }}" method="POST">
+        @csrf
         <input type="email" name="email" placeholder="Digite seu e-mail" required>
         <button type="submit" class="btn">Enviar</button>
       </form>

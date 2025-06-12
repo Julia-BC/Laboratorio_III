@@ -87,6 +87,11 @@ p a:hover {
 
 </style>
 
+<!-- Adicionando o SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+   <link rel="shortcut icon" href="{{ asset('imagens/favicon.ico') }}" type="image/x-icon">
+
 <body>
     <div class="container">
         <div class="left-side">
@@ -106,7 +111,7 @@ p a:hover {
                 <input type="password" name="senha" placeholder="Digite sua senha" required>
                 </div>
                 <div class="esqueceu_senha">
-                <a href="esqueceuSenha.html">Esqueceu sua senha?</a>
+                <a href="{{ route('password.request') }}">Esqueceu sua senha?</a>
                 </div>
                 <div>
                 <button type="submit" class="btn">Fazer login</button>
@@ -115,6 +120,8 @@ p a:hover {
             <p>Não tem cadastro? <a href="{{ route('cadastro') }}">Clique aqui.</a></p>
         </div>
     </div>
+
+    @include('components.alerts') <!-- Incluindo o componente de alertas -->
 </body>
 </html>
 

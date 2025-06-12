@@ -7,9 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Cliente;
+use App\Traits\VerifiesEmail; // Importa o trait para verificação de e-mail
 
 class ClienteAuthController extends Controller
 {
+    use VerifiesEmail; // Usa o trait para verificação de e-mail
+
     //exibe o formulário de cadastro do cliente
     public function showRegisterForm()
     {
@@ -26,16 +29,27 @@ class ClienteAuthController extends Controller
             'email' => 'required|string|email|max:255|unique:clientes,email',
             'telefone' => 'required|string|max:20',
             'senha' => 'required|string|min:8|confirmed',
+        ], [
+            'nome.required' => 'O nome é obrigatório.',
+            'cpf.required' => 'O CPF é obrigatório.',
+            'email.required' => 'O e-mail é obrigatório.',
+            'telefone.required' => 'O telefone é obrigatório.',
+            'senha.required' => 'A senha é obrigatória.',
+            'senha.confirmed' => 'As senhas não conferem.',
+            'cpf.unique' => 'Este CPF já está cadastrado.',
+            'email.unique' => 'Este e-mail já está cadastrado.',
         ]);
 
         //criação do cliente no banco de dados
-        Cliente::create([
+        $Cliente = Cliente::create([
             'nome' => $request->nome,
             'cpf' => $request->cpf,
             'email' => $request->email,
             'telefone' => $request->telefone,
             'senha' => Hash::make($request->senha), // criptografa a senha
         ]);
+
+        $this->sendVerificationEmail($Cliente); // Envia o e-mail de verificação
 
         return redirect()->route('login')->with('success', 'Cadastro cliente realizado! Faça login.');
     }
@@ -68,6 +82,6 @@ class ClienteAuthController extends Controller
     public function logout()
     {
         Auth::guard('cliente')->logout(); // encerra a sessão do cliente
-        return redirect()->route('cliente.login')->with('success', 'Logout cliente realizado!');
+        return redirect()->route('cliente.login.form')->with('success', 'Logout cliente realizado!');
     }
 }
