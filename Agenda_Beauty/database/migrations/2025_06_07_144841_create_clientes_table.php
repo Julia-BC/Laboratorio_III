@@ -25,6 +25,7 @@ return new class extends Migration
         $table->timestamps(); // Cria as colunas 'created_at' e 'updated_at'
         $table->string('password_reset_token')->nullable(); // Token para redefinição de senha
         $table->timestamp('password_reset_sent_at')->nullable(); // Data de envio do token de redefinição de senha
+        $table->string('foto_perfil')->nullable(); // Coluna para armazenar a foto de perfil do cliente
     });
 }
     /**

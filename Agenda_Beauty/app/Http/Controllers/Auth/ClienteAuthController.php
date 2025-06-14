@@ -99,11 +99,84 @@ class ClienteAuthController extends Controller
         return view('gerenciarContaCliente', compact('Cliente')); // retorna a view da conta do cliente com os dados do cliente autenticado
     }
 
+    // atualiza os dados do cliente
+    public function atualizarConta(Request $request)
+    {
+        $cliente = Auth::guard('cliente')->user();
+
+        $request->validate([
+            'email' => 'required|email|unique:clientes,email,' . $cliente->id,
+            'telefone' => 'required|string|max:20',
+            'foto_perfil' => 'nullable|image|max:2048',
+            'senha_atual' => 'nullable|string',
+            'nova_senha' => 'nullable|string|min:6|confirmed',
+        ], [
+            'email.required' => 'O e-mail é obrigatório.',
+            'email.unique' => 'Este e-mail já está cadastrado.',
+            'telefone.required' => 'O telefone é obrigatório.',
+            'nova_senha.min' => 'A nova senha deve ter pelo menos 6 caracteres.',
+            'nova_senha.confirmed' => 'As senhas não conferem.',
+        ]);
+
+        // Atualizar foto de perfil
+        if ($request->hasFile('foto_perfil')) {
+            $foto = $request->file('foto_perfil')->store('fotos_perfil', 'public');
+            $cliente->foto_perfil = $foto;
+        }
+
+        // Atualizar e-mail e telefone
+        $cliente->email = $request->email;
+        $cliente->telefone = $request->telefone;
+
+        // Atualizar senha, se fornecida
+        if ($request->filled('senha_atual') && $request->filled('nova_senha')) {
+            if (!Hash::check($request->senha_atual, $cliente->senha)) {
+                return back()->withErrors(['senha_atual' => 'Senha atual incorreta.']);
+            }
+            $cliente->senha = Hash::make($request->nova_senha);
+        }
+
+        $cliente->save();
+
+        return redirect()->back()->with('success', 'Conta atualizada com sucesso!');
+    }
+
+    public function excluirConta(Request $request)
+    {
+        \Log::info('Tentativa de exclusão de conta do cliente', ['request_method' => $request->method() , 'user_id' => Auth::guard('cliente')->id()]);
+
+        $cliente = Auth::guard('cliente')->user();
+
+        // Opcional: Validar senha atual para maior segurança
+        $request->validate([
+            // 'senha_atual' => 'required|string',
+        ]);
+
+        // if (!Hash::check($request->senha_atual, $cliente->senha)) {
+        //     return back()->withErrors(['senha_atual' => 'Senha atual incorreta.']);
+        // }
+
+        // Deletar a foto de perfil, se existir
+        if ($cliente->foto_perfil) {
+            \Storage::disk('public')->delete($cliente->foto_perfil);
+        }
+
+        // Deletar o cliente
+        $cliente->delete();
+
+        // Fazer logout
+        Auth::guard('cliente')->logout();
+
+        return redirect()->route('login')->with('success', 'Conta excluída com sucesso!');
+    }
+
+
+
     // realiza o logout do cliente
     public function logout()
     {
-        Auth::guard('cliente')->logout(); // encerra a sessão do cliente
-        return redirect()->route('cliente.login.form')->with('success', 'Logout cliente realizado!');
+    Auth::guard('cliente')->logout(); // encerra a sessão do cliente
+    return redirect()->route('cliente.login.form')->with('success', 'Logout cliente realizado!');
     }
 
     

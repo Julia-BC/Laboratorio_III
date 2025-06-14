@@ -108,45 +108,71 @@
       <h2>Gerenciar Minha Conta</h2>
       <div class="perfil">
         <label for="upload-foto">
-          <img src="/frontEnd/imagens/cameraFotoPerfil.png" alt="Foto de perfil" class="foto-perfil" />
+          <img src="{{ $Cliente->foto_perfil ? asset('storage/' . $Cliente->foto_perfil) : asset('imagens/cameraFotoPerfil.png') }}" alt="Foto de perfil" class="foto-perfil" />
         </label>
         <input type="file" id="upload-foto" name="foto_perfil" accept="image/*" style="display: none;" />
-        <span><?php echo $Cliente['nome']; ?>Nome Cliente</span>
+        <span>{{ $Cliente->nome }}</span>
       </div>
-      <form class="form-cadastro" action="atualizar-conta.php" method="POST" enctype="multipart/form-data">
+      <form class="form-cadastro" action="{{ route('cliente.conta.atualizar') }}" method="POST" enctype="multipart/form-data">
+        @csrf
         <!-- CPF -->
         <div class="info-item">
           <label for="cpf-input">CPF:</label>
-          <input type="text" name="cpf" id="cpf-input" class="info-input" value="<?php echo $Cliente['cpf']; ?>">
+          <input type="text" name="cpf" id="cpf-input" class="info-input" value="{{ $Cliente->cpf }}" readonly>
         </div>
+
         <!-- Email -->
         <div class="info-item">
           <label for="email-input">Email:</label>
-          <input type="email" name="email" id="email-input" class="info-input" value="<?php echo $Cliente['email']; ?>">
+          <input type="email" name="email" id="email-input" class="info-input" value="{{ old('email', $Cliente->email) }}">
+          @error('email')
+            <span class="error-message">{{ $message }}</span>
+          @enderror
         </div>
+
         <!-- Telefone -->
         <div class="info-item">
           <label for="telefone-input">Telefone:</label>
-          <input type="text" name="telefone" id="telefone-input" class="info-input" value="<?php echo $Cliente['telefone']; ?>">
+          <input type="text" name="telefone" id="telefone-input" class="info-input" value="{{ old('telefone', $Cliente->telefone) }}">
+          @error('telefone')
+            <span class="error-message">{{ $message }}</span>
+          @enderror
         </div>
+
         <!-- Troca de senha segura -->
         <div class="info-item">
           <label for="senha-atual-input">Senha atual:</label>
           <input type="password" name="senha_atual" id="senha-atual-input" class="info-input" placeholder="******">
+          @error('senha_atual')
+            <span class="error-message">{{ $message }}</span>
+          @enderror
         </div>
+
         <div class="info-item">
           <label for="nova-senha-input">Nova senha:</label>
           <input type="password" name="nova_senha" id="nova-senha-input" class="info-input" placeholder="******">
+          @error('nova_senha')
+            <span class="error-message">{{ $message }}</span>
+          @enderror
         </div>
+
         <div class="info-item">
           <label for="confirma-senha-input">Confirmar nova senha:</label>
           <input type="password" name="confirma_senha" id="confirma-senha-input" class="info-input" placeholder="*****">
-        </div>
-        <div class="action-buttons">
-          <button type="submit" class="btn">Salvar</button>
-          <a href="excluir-conta.php" class="btn danger">Excluir Cadastro</a> <!-- Link para exclusão de conta -->
+          @error('confirma_senha')
+            <span class="error-message">{{ $message }}</span>
+          @enderror
         </div>
       </form>
+
+        <div class="action-buttons">
+          <button type="submit" class="btn">Salvar</button>
+          <form action="{{ route('cliente.conta.excluir') }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir sua conta? Esta ação é irreversível.');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn danger" ">Excluir Cadastro</button> <!-- Linexclusão de conta -->
+          </form>
+        </div>
     </div>
   </div>
   <script>
