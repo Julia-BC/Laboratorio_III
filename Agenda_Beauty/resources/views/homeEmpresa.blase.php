@@ -67,7 +67,7 @@
     <div class="right-side">
       <img src="/frontEnd/imagens/florLotus.png" alt="Flor de Lótus" class="logo-lotus" />
       <p>Bem-vinda ao Agenda Beauty</p>
-      <h2>Olá, [nome do Empresa]</h2> <!--<?php echo htmlspecialchars($nomeEmpresa ?? ''); ?-->
+      <h2>Olá, {{$Empresa->nome}}</h2>
 
       <div class="foto-perfil">
         <form action="upload_foto.php" method="post" enctype="multipart/form-data">

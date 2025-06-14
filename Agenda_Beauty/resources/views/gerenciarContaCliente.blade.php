@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha Conta Cliente</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <style>
       .right-side {
         display: flex;
@@ -101,10 +101,10 @@
 <body>
   <div class="container">
     <div class="left-side">
-      <img src="/frontEnd/imagens/AgendaBeauty.png" alt="Logo" class="AgendaBeauty">
+      <img src=" {{ asset('imagens/AgendaBeauty.png') }}" alt="Logo" class="AgendaBeauty">
     </div>
     <div class="right-side">
-      <img src="/frontEnd/imagens/florLotus.png" alt="Flor de Lótus" class="logo-lotus">
+      <img src="{{ asset('imagens/florLotus.png') }}" alt="Flor de Lótus" class="logo-lotus">
       <h2>Gerenciar Minha Conta</h2>
       <div class="perfil">
         <label for="upload-foto">
@@ -128,7 +128,7 @@
           @error('email')
             <span class="error-message">{{ $message }}</span>
           @enderror
-        </div>
+ </div>
 
         <!-- Telefone -->
         <div class="info-item">
@@ -136,8 +136,7 @@
           <input type="text" name="telefone" id="telefone-input" class="info-input" value="{{ old('telefone', $Cliente->telefone) }}">
           @error('telefone')
             <span class="error-message">{{ $message }}</span>
-          @enderror
-        </div>
+          @enderror</div>
 
         <!-- Troca de senha segura -->
         <div class="info-item">
