@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home Cliente</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Empresa</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <style>
     .flor-lotus {
       width: 100px;
@@ -58,11 +57,9 @@
       width: 200px;
 
     }
-
 </style>
-</head>
 <body>
-  <div class="container">
+     <div class="container">
     <div class="left-side">
       <img src="/frontEnd/imagens/AgendaBeauty.png" alt="Logo" class="AgendaBeauty" />
     </div>
@@ -70,7 +67,7 @@
     <div class="right-side">
       <img src="/frontEnd/imagens/florLotus.png" alt="Flor de Lótus" class="logo-lotus" />
       <p>Bem-vinda ao Agenda Beauty</p>
-      <h2>Olá, [nome do Cliente]</h2> <!--<?php echo htmlspecialchars($nomeCliente ?? ''); ?-->
+      <h2>Olá, [nome do Empresa]</h2> <!--<?php echo htmlspecialchars($nomeEmpresa ?? ''); ?-->
 
       <div class="foto-perfil">
         <form action="upload_foto.php" method="post" enctype="multipart/form-data">
@@ -82,9 +79,9 @@
         </form>
       </div>
       <div class="botoes">
-         <a href="gerenciarContaCliente.html"><button class="btn"> Minha Conta</button></a>
-        <a href="agendamentos.html"><button class="btn">Agendar Atendimento</button></a>
-        <button class="btn">Meus Atendimentos</button>
+        <a href="gerenciarFuncionarios.html"><button class="btn">Gerenciar Funcionários</button></a>
+        <a href="gerenciarContaEmpresa.html"><button class="btn"> Minha Conta</button></a>
+        <button class="btn">Ver Agendamentos</button></a>
         <a href="index.html"><button class="btn">Sair</button></a>
         </div>
     </div>

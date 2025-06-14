@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Conta Cliente</title>
+    <title>Gerenciar Conta Empresa</title>
     <link rel="stylesheet" href="style.css">
-    <style>
+</head>
+<style>
       .right-side {
         display: flex;
         flex-direction: column;
@@ -97,82 +98,69 @@
         margin-top: 50px;
       }
     </style>
-</head>
 <body>
+    <body>
   <div class="container">
     <div class="left-side">
       <img src="/frontEnd/imagens/AgendaBeauty.png" alt="Logo" class="AgendaBeauty">
     </div>
     <div class="right-side">
       <img src="/frontEnd/imagens/florLotus.png" alt="Flor de Lótus" class="logo-lotus">
-      <h2>Gerenciar Minha Conta</h2>
+      <h2>Gerenciar Minha Conta Empresarial</h2>
       <div class="perfil">
         <label for="upload-foto">
-          <img src="{{ $Cliente->foto_perfil ? asset('storage/' . $Cliente->foto_perfil) : asset('imagens/cameraFotoPerfil.png') }}" alt="Foto de perfil" class="foto-perfil" />
+          <img src="/frontEnd/imagens/cameraFotoPerfil.png" alt="Foto de perfil" class="foto-perfil" />
         </label>
         <input type="file" id="upload-foto" name="foto_perfil" accept="image/*" style="display: none;" />
-        <span>{{ $Cliente->nome }}</span>
+        <span><?php echo $cliente['nome'];?>Nome Empresa</span>
       </div>
-      <form class="form-cadastro" action="{{ route('cliente.conta.atualizar') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <!-- CPF -->
-        <div class="info-item">
-          <label for="cpf-input">CPF:</label>
-          <input type="text" name="cpf" id="cpf-input" class="info-input" value="{{ $Cliente->cpf }}" readonly>
-        </div>
-
-        <!-- Email -->
+      <form class="form-cadastro" action="atualizar-conta.php" method="POST" enctype="multipart/form-data"> 
         <div class="info-item">
           <label for="email-input">Email:</label>
-          <input type="email" name="email" id="email-input" class="info-input" value="{{ old('email', $Cliente->email) }}">
-          @error('email')
-            <span class="error-message">{{ $message }}</span>
-          @enderror
+          <input type="email" name="email" id="email-input" class="info-input" value="<?php echo $cliente['email']; ?>">
         </div>
-
         <!-- Telefone -->
         <div class="info-item">
           <label for="telefone-input">Telefone:</label>
-          <input type="text" name="telefone" id="telefone-input" class="info-input" value="{{ old('telefone', $Cliente->telefone) }}">
-          @error('telefone')
-            <span class="error-message">{{ $message }}</span>
-          @enderror
+          <input type="text" name="telefone" id="telefone-input" class="info-input" value="<?php echo $cliente['telefone']; ?>">
         </div>
-
+        <!-- CEP -->
+        <div class="info-item">
+          <label for="cepEmpresa-input">CEP:</label>
+          <input type="text" name="endereco" id="endereco-input" class="info-input" value="<?php echo $cliente['endereco']; ?>">
+        </div>
+        <!--Cidade-->
+        <div class="info-item">
+          <label for="cidade-input">Cidade:</label>
+          <input type="text" name="cidade" id="cidade-input" class="info-input" value="<?php echo $cliente['cidade']; ?>">
+        </div>
+        <!--Bairro-->
+        <div class="info-item">
+          <label for="bairro-input">Bairro:</label>
+          <input type="text" name="bairro" id="bairro-input" class="info-input" value="<?php echo $cliente['bairro']; ?>">
+        </div>
+        <!--Complemeto (opcional)-->
+        <div class="info-item">
+          <label for="complemento-input">Complemento (opcional):</label>
+          <input type="text" name="complemento" id="complemento-input" class="info-input" value="<?php echo $cliente['complemento']; ?>">
         <!-- Troca de senha segura -->
         <div class="info-item">
           <label for="senha-atual-input">Senha atual:</label>
           <input type="password" name="senha_atual" id="senha-atual-input" class="info-input" placeholder="******">
-          @error('senha_atual')
-            <span class="error-message">{{ $message }}</span>
-          @enderror
         </div>
-
         <div class="info-item">
           <label for="nova-senha-input">Nova senha:</label>
           <input type="password" name="nova_senha" id="nova-senha-input" class="info-input" placeholder="******">
-          @error('nova_senha')
-            <span class="error-message">{{ $message }}</span>
-          @enderror
         </div>
-
         <div class="info-item">
           <label for="confirma-senha-input">Confirmar nova senha:</label>
           <input type="password" name="confirma_senha" id="confirma-senha-input" class="info-input" placeholder="*****">
-          @error('confirma_senha')
-            <span class="error-message">{{ $message }}</span>
-          @enderror
         </div>
-      </form>
-
         <div class="action-buttons">
           <button type="submit" class="btn">Salvar</button>
-          <form action="{{ route('cliente.conta.excluir') }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir sua conta? Esta ação é irreversível.');">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn danger" ">Excluir Cadastro</button> <!-- Linexclusão de conta -->
-          </form>
+          <a href="excluir-conta.php" class="btn danger">Excluir Cadastro</a> <!-- Link para exclusão de conta -->
         </div>
+      </form>
     </div>
   </div>
   <script>
@@ -193,11 +181,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
