@@ -7,17 +7,20 @@ use Illuminate\Http\Request;
 use App\Models\Cliente;
 use App\Models\Empresa;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password; 
+use function PHPUnit\Framework\returnArgument;// Adicione esta linha
 
 
 //responsável por exibir o formulário e processar a redefinição de senha
 class ResetPasswordController extends Controller
 {
     //Exibe o formulário de redefinição de senha
-    public function showResetForm(Request $request, $token)
+    public function showResetForm(Request $request, $token = null)
     {
-        return view('novaSenha', [
-            'token' => $token,
-            'email' => $request->query('email') // passa o e-mail como parâmetro para a view
+
+        return view('novaSenha')->with([
+        'token' => $token,
+        'email' => $request->email // ou: $request->query('email') // vem da URL ?email=... passa o e-mail como parâmetro para a view
         ]);
     }
 
@@ -30,6 +33,16 @@ class ResetPasswordController extends Controller
             'email' => 'required|email',
             'password' => 'required|confirmed|min:6',
         ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->password = Hash::make($password);
+                $user->save();
+            }
+        );
+
+        dd($status); // ← Aqui você verá o erro ou sucesso
 
         // Procura usuário pelo token
         $user = Cliente::where('password_reset_token', $request->token)->first();
@@ -60,4 +73,6 @@ class ResetPasswordController extends Controller
         // Segurança: fallback caso não seja cliente nem empresa
         return redirect()->route('password.request')->withErrors(['token' => 'Erro inesperado.']);
     }
+
+
 }

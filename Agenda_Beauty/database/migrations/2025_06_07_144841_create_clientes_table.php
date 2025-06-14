@@ -32,6 +32,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('clientes', function (Blueprint $table) {
+            //
+        });
         Schema::dropIfExists('clientes'); // Remove a tabela 'clientes' se ela existir
     }
 };

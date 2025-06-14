@@ -72,7 +72,14 @@ class ClienteAuthController extends Controller
 
         // tenta autenticar o cliente com o guard 'cliente
         if (Auth::guard('cliente')->attempt(['email' => $credentials['email'], 'password' => $credentials['senha']])) {
-            return redirect()->route('cliente.dashboard')->with('success', 'Login cliente realizado!');
+            $Cliente = Auth::guard('cliente')->user();
+
+            if (!$Cliente->email_verified_at) {
+            Auth::guard('cliente')->logout();
+            return back()->withErrors(['email' => 'Você precisa confirmar seu e-mail antes de acessar.']);
+        }
+
+            return redirect()->route('homeCliente')->with('success', 'Login cliente realizado!');
         }
 
         // se falhar, retorna com erro
@@ -82,8 +89,15 @@ class ClienteAuthController extends Controller
 
     public function index()
 {
-    return view('cliente.dashboard'); // ajuste o nome da view conforme seu projeto
+    $Cliente = Auth::guard('cliente') -> user();
+    return view('homeCliente', compact('Cliente')); // retorna a view do dashboard do cliente com os dados do cliente autenticado
 }
+
+    public function showConta()
+    {
+        $Cliente = Auth::guard('cliente')->user(); // obtém o cliente autenticado
+        return view('gerenciarContaCliente', compact('Cliente')); // retorna a view da conta do cliente com os dados do cliente autenticado
+    }
 
     // realiza o logout do cliente
     public function logout()
@@ -91,4 +105,6 @@ class ClienteAuthController extends Controller
         Auth::guard('cliente')->logout(); // encerra a sessão do cliente
         return redirect()->route('cliente.login.form')->with('success', 'Logout cliente realizado!');
     }
+
+    
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minha conta-Cliente</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <style>
       .right-side {
         display: flex;
@@ -101,33 +101,33 @@
 <body>
   <div class="container">
     <div class="left-side">
-      <img src="/frontEnd/imagens/AgendaBeauty.png" alt="Logo" class="AgendaBeauty">
+      <img src="{{ asset('imagens/AgendaBeauty.png') }}" alt="Logo" class="AgendaBeauty">
     </div>
     <div class="right-side">
-      <img src="/frontEnd/imagens/florLotus.png" alt="Flor de Lótus" class="logo-lotus">
+      <img src="{{ asset('imagens/florLotus.png') }}" alt="Flor de Lótus" class="logo-lotus">
       <h2>Gerenciar Minha Conta</h2>
       <div class="perfil">
         <label for="upload-foto">
           <img src="/frontEnd/imagens/cameraFotoPerfil.png" alt="Foto de perfil" class="foto-perfil" />
         </label>
         <input type="file" id="upload-foto" name="foto_perfil" accept="image/*" style="display: none;" />
-        <span><?php echo $cliente['nome']; ?>Nome Cliente</span>
+        <span><?php echo $Cliente['nome']; ?>Nome Cliente</span>
       </div>
       <form class="form-cadastro" action="atualizar-conta.php" method="POST" enctype="multipart/form-data">
         <!-- CPF -->
         <div class="info-item">
           <label for="cpf-input">CPF:</label>
-          <input type="text" name="cpf" id="cpf-input" class="info-input" value="<?php echo $cliente['cpf']; ?>">
+          <input type="text" name="cpf" id="cpf-input" class="info-input" value="<?php echo $Cliente['cpf']; ?>">
         </div>
         <!-- Email -->
         <div class="info-item">
           <label for="email-input">Email:</label>
-          <input type="email" name="email" id="email-input" class="info-input" value="<?php echo $cliente['email']; ?>">
+          <input type="email" name="email" id="email-input" class="info-input" value="<?php echo $Cliente['email']; ?>">
         </div>
         <!-- Telefone -->
         <div class="info-item">
           <label for="telefone-input">Telefone:</label>
-          <input type="text" name="telefone" id="telefone-input" class="info-input" value="<?php echo $cliente['telefone']; ?>">
+          <input type="text" name="telefone" id="telefone-input" class="info-input" value="<?php echo $Cliente['telefone']; ?>">
         </div>
         <!-- Troca de senha segura -->
         <div class="info-item">

@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+// Controllers de autenticação
 use App\Http\Controllers\Auth\ClienteAuthController;
 use App\Http\Controllers\Auth\EmpresaAuthController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -29,20 +30,22 @@ Route::prefix('cliente')->group(function () {
     // Cadastro
     Route::get('/register', [ClienteAuthController::class, 'showRegisterForm'])->name('cliente.register.form'); //formulário de cadastro
     Route::post('/register', [ClienteAuthController::class, 'register'])->name('cliente.register.submit'); //submissão do cadastro
+    
+    //Dashboard (autenticado) -> Rotas protegidas = apenas clientes autenticados podem acessar
+    Route::middleware('auth:cliente')->group(function () {
+
+        Route::get('/dashboard', [ClienteAuthController::class, 'index'])->name('homeCliente'); // Dashboard do cliente
+        Route::get('/minha-conta', [ClienteAuthController::class, 'showConta'])->name('cliente.conta'); // Exibe a conta do cliente
+        Route::post('/logout', [ClienteAuthController::class, 'logout'])->name('cliente.logout'); // Logout do cliente
+
+        
+    });
 
     // Verificação de e-mail -> rotas que exigem cliente autenticado e link assinado
     Route::middleware(['auth:cliente', 'signed'])->group(function () {
     
     });
     
-    //Dashboard (autenticado) -> Rotas protegidas = apenas clientes autenticados podem acessar
-    Route::middleware('auth:cliente')->group(function () {
-
-        Route::get('/dashboard', [ClienteAuthController::class, 'index'])->name('cliente.dashboard'); // Dashboard do cliente
-        Route::post('/logout', [ClienteAuthController::class, 'logout'])->name('cliente.logout'); // Logout do cliente
-
-        
-    });
 
 });
 
@@ -78,7 +81,13 @@ Route::get('/verify-email/{token}', [VerificationController::class, 'verify'])->
 
 
 // RECUPERAÇÃO DE SENHA – formulário, envio de link e redefinição
+
+//1.Exibir formulário para digitar email
 Route::get('/esqueci-senha', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+//2.Enviar link por email
 Route::post('/esqueci-senha', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+//3.Exibir formulário para nova senha com token e email
 Route::get('/resetar-senha/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+//4.Envio da nova senha
 Route::post('/resetar-senha', [ResetPasswordController::class, 'reset'])->name('password.update');
+

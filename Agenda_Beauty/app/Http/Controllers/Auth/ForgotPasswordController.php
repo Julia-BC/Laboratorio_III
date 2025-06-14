@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 
 
-//Responsáavel por exibir o formulário de recuperação de senha e enviar o link de redefinição
+//Responsável por exibir o formulário de recuperação de senha e enviar o link de redefinição
 class ForgotPasswordController extends Controller
 {
 
@@ -45,13 +45,14 @@ class ForgotPasswordController extends Controller
         $user->password_reset_sent_at = now();
         $user->save();
 
-        // Envia o e-mail com o link de redefinição (view: emails.password_reset)
-        Mail::send('emails.password_reset', ['token' => $token], function ($message) use ($user) {
+        // Envia o e-mail com o link de redefinição
+        $resetLink = url('/resetar-senha/' . $token . '?email=' . urlencode($user->email));
+        Mail::send('emails.password_reset', ['resetLink' => $resetLink], function ($message) use ($user) {
             $message->to($user->email);
             $message->subject('Recuperação de senha - Agenda Beauty');
         });
 
         //Retorna com mensagem de sucesso
-        return back()->with('status', 'Link de recuperação enviado para seu e-mail!');
+        return back()->with('status', 'Link de redefinição enviado para seu e-mail!');
     }
 }
