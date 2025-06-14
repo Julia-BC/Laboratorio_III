@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Home Cliente</title>
-  <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <style>
@@ -60,30 +60,29 @@
     }
 
 </style>
-
-
+</head>
 <body>
   <div class="container">
     <div class="left-side">
-      <img src="{{ asset('imagens/AgendaBeauty.png') }}" alt="Logo" class="AgendaBeauty" />
+      <img src="/frontEnd/imagens/AgendaBeauty.png" alt="Logo" class="AgendaBeauty" />
     </div>
 
     <div class="right-side">
-      <img src="{{ asset('imagens/florLotus.png') }}" alt="Flor de Lótus" class="logo-lotus" />
+      <img src="/frontEnd/imagens/florLotus.png" alt="Flor de Lótus" class="logo-lotus" />
       <p>Bem-vinda ao Agenda Beauty</p>
-      <h2>Olá, {{ $Cliente->nome }}</h2> 
+      <h2>Olá, [nome do Cliente]</h2> <!--<?php echo htmlspecialchars($nomeCliente ?? ''); ?-->
 
       <div class="foto-perfil">
         <form action="upload_foto.php" method="post" enctype="multipart/form-data">
           <label for="fotoInput">
-            <img src="{{ $Cliente->foto_perfil ? asset('storage/' . $Cliente->foto_perfil) : asset('imagens/default-profile.png') }}" alt="fotoPerfil" 
+            <img src="?php echo htmlspecialchars($fotoPerfil ?? '/frontEnd/imagens/default-profile.png'); ?>" alt="fotoPerfil" 
             class="foto-perfil" id="fotoPerfil" onclick="document.getElementById('fotoInput').click()"/>
           </label>
           <input type="file" name="nova_foto" id="fotoInput" style="display: none;" onchange="this.form.submit()"/>
         </form>
       </div>
       <div class="botoes">
-         <a href="{{ route('cliente.conta') }}"><button class="btn"> Minha Conta</button></a>
+         <a href="gerenciarContaCliente.html"><button class="btn"> Minha Conta</button></a>
         <a href="agendamentos.html"><button class="btn">Agendar Atendimento</button></a>
         <button class="btn">Meus Atendimentos</button>
         <a href="index.html"><button class="btn">Sair</button></a>
@@ -92,4 +91,3 @@
   </div>
 </body>
 </html>
-
