@@ -47,7 +47,11 @@ class ForgotPasswordController extends Controller
 
         // Envia o e-mail com o link de redefinição
         $resetLink = url('/resetar-senha/' . $token . '?email=' . urlencode($user->email));
-        Mail::send('emails.password_reset', ['resetLink' => $resetLink], function ($message) use ($user) {
+
+        Mail::send('emails.password_reset', [
+            'token' => $token,
+            'email' => $user -> email
+        ], function ($message) use ($user) {
             $message->to($user->email);
             $message->subject('Recuperação de senha - Agenda Beauty');
         });

@@ -17,10 +17,9 @@ class ResetPasswordController extends Controller
     //Exibe o formulário de redefinição de senha
     public function showResetForm(Request $request, $token = null)
     {
-
         return view('novaSenha')->with([
-        'token' => $token,
-        'email' => $request->email // ou: $request->query('email') // vem da URL ?email=... passa o e-mail como parâmetro para a view
+            'token' => $token,
+            'email' => $request->query('email')
         ]);
     }
 
@@ -34,15 +33,6 @@ class ResetPasswordController extends Controller
             'password' => 'required|confirmed|min:6',
         ]);
 
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) {
-                $user->password = Hash::make($password);
-                $user->save();
-            }
-        );
-
-        dd($status); // ← Aqui você verá o erro ou sucesso
 
         // Procura usuário pelo token
         $user = Cliente::where('password_reset_token', $request->token)->first();
@@ -65,9 +55,9 @@ class ResetPasswordController extends Controller
 
         // Redireciona para o login correspondente com mensagem de sucesso
         if ($user instanceof Cliente) {
-            return redirect()->route('cliente.login.form')->with('success', 'Senha atualizada! Faça login.');
+            return redirect()->route('login')->with('success', 'Senha atualizada! Faça login.');
         } elseif ($user instanceof Empresa) {
-            return redirect()->route('empresa.login')->with('success', 'Senha atualizada! Faça login.');
+            return redirect()->route('login')->with('success', 'Senha atualizada! Faça login.');
         }
 
         // Segurança: fallback caso não seja cliente nem empresa

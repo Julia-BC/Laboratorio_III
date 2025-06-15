@@ -63,7 +63,7 @@ class EmpresaAuthController extends Controller
         
         $this->sendVerificationEmail($empresa); // Envia o e-mail de verificação
 
-        return redirect()->route('empresa.login')->with('success', 'Cadastro empresa realizado! Faça login.');
+        return redirect()->route('login')->with('success', 'Cadastro empresa realizado! Faça login.');
     }
 
     // Exibe o formulário de login da empresa
@@ -88,16 +88,89 @@ class EmpresaAuthController extends Controller
             Auth::guard('empresa')->logout();
             return back()->withErrors(['emailEmpresa' => 'Você precisa verificar seu e-mail antes de acessar o sistema.']);
         }
-        return redirect()->route('empresa.dashboard')->with('success', 'Login empresa realizado!');
+        return redirect()->route('homeEmpresa')->with('success', 'Login empresa realizado!');
     }
 
     return back()->withErrors(['emailEmpresa' => 'Credenciais inválidas para empresa.']);
 }
 
+    public function index()
+    {
+        $empresa = Auth::guard('empresa')->user();
+        return view('homeEmpresa', compact('empresa')); // Retorna a view do dashboard da empresa com os dados da empresa autenticada
+    }
+
+    public function showConta()
+    {
+        $empresa = Auth::guard('empresa')->user(); // Obtém a empresa autenticada
+        return view('gerenciarContaEmpresa', compact('empresa')); // Exibe a conta da empresa
+    }
+
+    // Atualiza os dados da conta da empresa
+    public function atualizarConta(Request $request)
+    {
+        $empresa = Auth::guard('empresa')->user(); // Obtém a empresa autenticada
+
+        // Validação dos dados enviados
+        $request->validate([
+            'nomeEmpresa' => 'required|string|max:255',
+            'telefoneEmpresa' => 'required|string|max:20',
+            'cepEmpresa' => 'required|string|max:20',
+            'cidadeEmpresa' => 'required|string|max:100',
+            'bairroEmpresa' => 'required|string|max:100',
+            'complementoEmpresa' => 'nullable|string|max:255',
+        ]);
+
+        // Atualizar foto de perfil
+        if ($request->hasFile('foto_perfil')) {
+            $foto = $request->file('foto_perfil')->store('fotos_perfil', 'public');
+            $empresa->foto_perfil = $foto;
+        }
+
+        // Atualiza os dados da empresa
+        $empresa->update([
+            'nome' => $request->nomeEmpresa,
+            'telefone' => $request->telefoneEmpresa,
+            'cep' => $request->cepEmpresa,
+            'cidade' => $request->cidadeEmpresa,
+            'bairro' => $request->bairroEmpresa,
+            'complemento' => $request->complementoEmpresa,
+        ]);
+
+        $empresa->save(); // Salva as alterações no banco de dados
+
+        return redirect()->route('empresa.conta')->with('success', 'Conta da empresa atualizada com sucesso!');
+    }
+
+    // Exclui a conta da empresa
+    public function excluirConta(Request $request)
+    {
+        \Log::info('Tentativa de excluisão de conta da empresa', ['request_method' =>$request->method() , 'user_id' => Auth::guard('empresa')->id()]);
+
+        $empresa = Auth::guard('empresa')->user(); // Obtém a empresa autenticada
+
+        $request->validate([
+            'senha_atual' => 'required|string',
+        ]);
+
+        if (!Hash::check($request->senha_atual, $empresa->senha)) {
+            return back()->withErrors(['senha_atual' => 'Senha atual incorreta.']);
+        }
+
+         // Deletar a foto de perfil, se existir
+        if ($empresa->foto_perfil) {
+            \Storage::disk('public')->delete($empresa->foto_perfil);
+        }
+
+        // Deletar a empresa
+        $empresa->delete();
+
+    }
+
     // Realiza o logout da empresa
     public function logout()
     {
         Auth::guard('empresa')->logout(); // Encerra a sessão da empresa
-        return redirect()->route('empresa.login')->with('success', 'Logout empresa realizado!');
+        return redirect()->route('login')->with('success', 'Logout empresa realizado!');
     }
 }

@@ -149,12 +149,12 @@ class ClienteAuthController extends Controller
 
         // Opcional: Validar senha atual para maior segurança
         $request->validate([
-            // 'senha_atual' => 'required|string',
+            'senha_atual' => 'required|string',
         ]);
 
-        // if (!Hash::check($request->senha_atual, $cliente->senha)) {
-        //     return back()->withErrors(['senha_atual' => 'Senha atual incorreta.']);
-        // }
+        if (!Hash::check($request->senha_atual, $cliente->senha)) {
+            return back()->withErrors(['senha_atual' => 'Senha atual incorreta.']);
+        }
 
         // Deletar a foto de perfil, se existir
         if ($cliente->foto_perfil) {
@@ -176,7 +176,7 @@ class ClienteAuthController extends Controller
     public function logout()
     {
     Auth::guard('cliente')->logout(); // encerra a sessão do cliente
-    return redirect()->route('cliente.login.form')->with('success', 'Logout cliente realizado!');
+    return redirect()->route('login')->with('success', 'Logout cliente realizado!');
     }
 
     

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciar Conta Empresa</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <style>
       .right-side {
@@ -102,47 +102,54 @@
     <body>
   <div class="container">
     <div class="left-side">
-      <img src="/frontEnd/imagens/AgendaBeauty.png" alt="Logo" class="AgendaBeauty">
+      <img src="{{ asset('imagens/AgendaBeauty.png') }}" alt="Logo" class="AgendaBeauty">
     </div>
     <div class="right-side">
-      <img src="/frontEnd/imagens/florLotus.png" alt="Flor de Lótus" class="logo-lotus">
+      <img src="{{ asset('imagens/florLotus.png') }}" alt="Flor de Lótus" class="logo-lotus">
       <h2>Gerenciar Minha Conta Empresarial</h2>
       <div class="perfil">
         <label for="upload-foto">
-          <img src="/frontEnd/imagens/cameraFotoPerfil.png" alt="Foto de perfil" class="foto-perfil" />
+          <img src="{{ $empresa->foto_perfil ? asset('storage/' . $empresa->foto_perfil) : asset('imagens/cameraFotoPerfil.png') }}" alt="Foto de perfil" class="foto-perfil" />
         </label>
         <input type="file" id="upload-foto" name="foto_perfil" accept="image/*" style="display: none;" />
-        <span><?php echo $cliente['nome'];?>Nome Empresa</span>
+        <span>{{ $empresa->razao_social }}</span>
       </div>
-      <form class="form-cadastro" action="atualizar-conta.php" method="POST" enctype="multipart/form-data"> 
-        <div class="info-item">
+      <form class="form-cadastro" action="{{ route('empresa.conta.atualizar') }}" method="POST" enctype="multipart/form-data"> 
+        @csrf
+        <!-- CNPJ -->
+         <div class="info-item">
+          <label for="cnpj-input">CNPJ:</label>
+          <input type="text" name="cnpj" id="cnpj-input" class="info-input" value="{{ old('cnpj', $empresa->cnpj) }}" readonly>
+         </div>
+         <!-- Email -->
+          <div class="info-item">
           <label for="email-input">Email:</label>
-          <input type="email" name="email" id="email-input" class="info-input" value="<?php echo $cliente['email']; ?>">
-        </div>
+          <input type="email" name="email" id="email-input" class="info-input" value="{{ old('email', $empresa->email) }}">
+          </div>
         <!-- Telefone -->
         <div class="info-item">
           <label for="telefone-input">Telefone:</label>
-          <input type="text" name="telefone" id="telefone-input" class="info-input" value="<?php echo $cliente['telefone']; ?>">
+          <input type="text" name="telefone" id="telefone-input" class="info-input" value="{{ old('telefone', $empresa->telefone) }}">
         </div>
         <!-- CEP -->
         <div class="info-item">
           <label for="cepEmpresa-input">CEP:</label>
-          <input type="text" name="endereco" id="endereco-input" class="info-input" value="<?php echo $cliente['endereco']; ?>">
+          <input type="text" name="endereco" id="endereco-input" class="info-input" value="{{ old('cep', $empresa->cep) }}">
         </div>
         <!--Cidade-->
         <div class="info-item">
           <label for="cidade-input">Cidade:</label>
-          <input type="text" name="cidade" id="cidade-input" class="info-input" value="<?php echo $cliente['cidade']; ?>">
+          <input type="text" name="cidade" id="cidade-input" class="info-input" value="{{ old('cidade', $empresa->cidade) }}">
         </div>
         <!--Bairro-->
         <div class="info-item">
           <label for="bairro-input">Bairro:</label>
-          <input type="text" name="bairro" id="bairro-input" class="info-input" value="<?php echo $cliente['bairro']; ?>">
+          <input type="text" name="bairro" id="bairro-input" class="info-input" value="{{ old('bairro', $empresa->bairro) }}">
         </div>
         <!--Complemeto (opcional)-->
         <div class="info-item">
           <label for="complemento-input">Complemento (opcional):</label>
-          <input type="text" name="complemento" id="complemento-input" class="info-input" value="<?php echo $cliente['complemento']; ?>">
+          <input type="text" name="complemento" id="complemento-input" class="info-input" value="{{ old('complemento', $empresa->complemento) }}">
         <!-- Troca de senha segura -->
         <div class="info-item">
           <label for="senha-atual-input">Senha atual:</label>
@@ -156,11 +163,16 @@
           <label for="confirma-senha-input">Confirmar nova senha:</label>
           <input type="password" name="confirma_senha" id="confirma-senha-input" class="info-input" placeholder="*****">
         </div>
-        <div class="action-buttons">
-          <button type="submit" class="btn">Salvar</button>
-          <a href="excluir-conta.php" class="btn danger">Excluir Cadastro</a> <!-- Link para exclusão de conta -->
-        </div>
       </form>
+
+      <div class="action-buttons">
+        <button type="submit" class="btn">Salvar</button>
+        <form action="{{ route('empresa.conta.excluir') }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir sua conta? Esta ação é irreversível.');">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="btn danger">Excluir Cadastro</button>
+        </form> <!-- Link para exclusão de conta -->
+      </div>
     </div>
   </div>
   <script>

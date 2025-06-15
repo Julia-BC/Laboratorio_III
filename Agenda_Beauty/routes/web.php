@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\FuncionarioController;
+use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 // Controllers de autenticação
@@ -22,14 +24,15 @@ Route::get('/cadastro', fn() => redirect()->route('cliente.register.form'))->nam
 
 //ROTAS CLIENTE
 Route::prefix('cliente')->group(function () {
-
-    // Login
-    Route::get('/login', [ClienteAuthController::class, 'showLoginForm'])->name('cliente.login.form'); //formulário de login
-    Route::post('/login', [ClienteAuthController::class, 'login'])->name('cliente.login.submit'); //submissão do login
     
+    // Login
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login'); //formulário de login
+    Route::post('/login', [LoginController::class, 'login'])->name('login.submit'); //submissão do login
     // Cadastro
     Route::get('/register', [ClienteAuthController::class, 'showRegisterForm'])->name('cliente.register.form'); //formulário de cadastro
     Route::post('/register', [ClienteAuthController::class, 'register'])->name('cliente.register.submit'); //submissão do cadastro
+    //logout
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     
     //Dashboard (autenticado) -> Rotas protegidas = apenas clientes autenticados podem acessar
     Route::middleware('auth:cliente')->group(function () {
@@ -38,33 +41,36 @@ Route::prefix('cliente')->group(function () {
         Route::get('/minha-conta', [ClienteAuthController::class, 'showConta'])->name('cliente.conta'); // Exibe a conta do cliente
         Route::post('/minha-conta', [ClienteAuthController::class, 'atualizarConta'])->name('cliente.conta.atualizar'); // Atualiza a conta do cliente
         Route::delete('/minha-conta/excluir', [ClienteAuthController::class, 'excluirConta'])->name('cliente.conta.excluir'); // excluir a conta do cliente
-        Route::post('/logout', [ClienteAuthController::class, 'logout'])->name('cliente.logout'); // Logout do cliente
+    
     });
 
     // Verificação de e-mail -> rotas que exigem cliente autenticado e link assinado
     Route::middleware(['auth:cliente', 'signed'])->group(function () {
-    
+        
     });
     
-
+    
 });
 
 //ROTAS EMPRESA
 Route::prefix('empresa')->group(function () {
-
-    // Login 
-    Route::get('/login', [EmpresaAuthController::class, 'showLoginForm'])->name('empresa.login'); // Formulário de login
-    Route::post('/login', [EmpresaAuthController::class, 'login'])->name('empresa.login.submit'); // Submissão do login
-
+    
+    // Login
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login'); //formulário de login
+    Route::post('/login', [LoginController::class, 'login'])->name('login.submit'); //submissão do login
     // Cadastro 
     Route::get('/register', [EmpresaAuthController::class, 'showRegisterForm'])->name('empresa.register'); // Formulário de cadastro
-    Route::post('/register', [EmpresaAuthController::class, 'register'])->name('empresa.register.submit'); //
+    Route::post('/register', [EmpresaAuthController::class, 'register'])->name('empresa.register.submit'); // Submissão do cadastro
+    //logout
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     // Dashboard empresa (autenticado) -> Rotas protegidas = apenas empresas autenticadas podem acessar
     Route::middleware('auth:empresa')->group(function () {
 
-        Route::get('/dashboard', [EmpresaAuthController::class, 'index'])->name('empresa.dashboard'); // Dashboard da empresa
-        Route::post('/logout', [EmpresaAuthController::class, 'logout'])->name('empresa.logout'); // Logout da empresa
+        Route::get('/dashboard', [EmpresaAuthController::class, 'index'])->name('homeEmpresa'); // Dashboard da empresa
+        Route::get('/minha-conta', [EmpresaAuthController::class, 'showConta'])->name('empresa.conta'); // Exibe a conta do cliente
+        Route::post('/minha-conta', [EmpresaAuthController::class, 'atualizarConta'])->name('empresa.conta.atualizar'); // Atualiza a conta do cliente
+        Route::delete('/minha-conta/excluir', [EmpresaAuthController::class, 'excluirConta'])->name('empresa.conta.excluir'); // excluir a conta do cliente
     });
 
     // Verificação de e-mail
@@ -74,7 +80,26 @@ Route::prefix('empresa')->group(function () {
         Route::post('/empresa/email/verification-notification', [VerificationController::class, 'resend'])->name('empresa.verification.send');
     });
 
+
+    //ROTAS FUNCIONARIOS
+    Route::middleware('auth:empresa')->group(function () {
+
+        Route::get('funcionarios', [FuncionarioController::class, 'index'])->name('funcionario.conta'); // Exibe os funcionário
+
+        Route::post('funcionarios', [FuncionarioController::class, 'store'])->name('empresa.funcionarios.cadastrar');
+        // Editar funcionário (pode ser com modal ou página separada)
+        Route::get('funcionarios/{id}/editar', [FuncionarioController::class, 'edit'])->name('empresa.funcionarios.editar');
+
+        // Atualizar funcionário (página ou modal de edição)
+        Route::put('funcionarios/{id}', [FuncionarioController::class, 'update'])->name('empresa.funcionarios.atualizar');
+
+        // Excluir funcionário
+        Route::delete('funcionarios/{id}', [FuncionarioController::class, 'destroy'])->name('empresa.funcionarios.excluir');
+    });
+
 });
+
+
 
 // VERIFICAÇÃO DE E-MAIL personalizada (para ambos)
 Route::get('/verify-email/{token}', [VerificationController::class, 'verify'])->name('verify.email');

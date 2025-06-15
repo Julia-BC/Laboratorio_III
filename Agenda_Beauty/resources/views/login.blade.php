@@ -102,7 +102,7 @@ p a:hover {
                 <img src="{{ asset('imagens/florLotus.png') }}" alt="Flor de Lótus" class="logo-lotus">
             </div>
             <h2 class="titulo-login">LOGIN</h2>
-            <form method="POST" action="{{ route('cliente.login.submit') }}" class="login-form">
+            <form method="POST" action="{{ route('login.submit') }}" class="login-form">
                @csrf
                 <div>
                 <input type="email" name="email" placeholder="Digite seu e-mail" required>

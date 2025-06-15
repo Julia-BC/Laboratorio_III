@@ -85,7 +85,7 @@
          <a href="{{ route('cliente.conta') }}"><button class="btn"> Minha Conta</button></a>
         <a href="agendamentos.html"><button class="btn">Agendar Atendimento</button></a>
         <button class="btn">Meus Atendimentos</button>
-        <a href="index.html"><button class="btn">Sair</button></a>
+        <a href="{{ route('login') }}"><button class="btn">Sair</button></a>
         </div>
     </div>
   </div>

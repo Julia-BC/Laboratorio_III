@@ -88,6 +88,9 @@
       <form class="form-cadastro" action="{{ route('password.email') }}" method="POST">
         @csrf
         <input type="email" name="email" placeholder="Digite seu e-mail" required>
+        @error('email')
+        <span class="error">{{ $message }}</span>
+        @enderror
         <button type="submit" class="btn">Enviar</button>
       </form>
     </div>

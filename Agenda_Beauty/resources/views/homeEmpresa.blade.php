@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Empresa</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <style>
     .flor-lotus {
@@ -61,13 +61,13 @@
 <body>
      <div class="container">
     <div class="left-side">
-      <img src="/frontEnd/imagens/AgendaBeauty.png" alt="Logo" class="AgendaBeauty" />
+      <img src=" {{ asset('imagens/AgendaBeauty.png') }}" alt="Logo" class="AgendaBeauty" />
     </div>
 
     <div class="right-side">
-      <img src="/frontEnd/imagens/florLotus.png" alt="Flor de Lótus" class="logo-lotus" />
+      <img src="{{ asset('imagens/florLotus.png') }}" alt="Flor de Lótus" class="logo-lotus" />
       <p>Bem-vinda ao Agenda Beauty</p>
-      <h2>Olá, {{$Empresa->nome}}</h2>
+      <h2>Olá, {{$empresa->nome}}</h2>
 
       <div class="foto-perfil">
         <form action="upload_foto.php" method="post" enctype="multipart/form-data">
@@ -79,8 +79,8 @@
         </form>
       </div>
       <div class="botoes">
-        <a href="gerenciarFuncionarios.html"><button class="btn">Gerenciar Funcionários</button></a>
-        <a href="gerenciarContaEmpresa.html"><button class="btn"> Minha Conta</button></a>
+        <a href="{{ route('funcionario.conta') }}"><button class="btn">Gerenciar Funcionários</button></a>
+        <a href="{{ route('empresa.conta') }}"><button class="btn"> Minha Conta</button></a>
         <button class="btn">Ver Agendamentos</button></a>
         <a href="index.html"><button class="btn">Sair</button></a>
         </div>
