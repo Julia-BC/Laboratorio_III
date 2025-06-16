@@ -265,6 +265,7 @@
         methodInput.name = '_method';
         methodInput.value = 'PUT';
         form.appendChild(methodInput);
+      }
     }
 
     function salvarFuncionario(event) {

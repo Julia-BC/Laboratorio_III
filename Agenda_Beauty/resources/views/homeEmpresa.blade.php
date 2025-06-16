@@ -82,7 +82,7 @@
         <a href="{{ route('funcionario.conta') }}"><button class="btn">Gerenciar Funcionários</button></a>
         <a href="{{ route('empresa.conta') }}"><button class="btn"> Minha Conta</button></a>
         <button class="btn">Ver Agendamentos</button></a>
-        <a href="index.html"><button class="btn">Sair</button></a>
+        <a href="{{ route('login') }}"><button class="btn">Sair</button></a>
         </div>
     </div>
   </div>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Agendamento Completo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
   <style>
     body {
       background-color: #3d405b;
@@ -119,18 +119,19 @@
 <body>
   <div class="container">
     <div class="left-side">
-      <img src="/frontEnd/imagens/AgendaBeauty.png" alt="Logo" class="AgendaBeauty">
+      <img src="{{ asset('imagens/AgendaBeauty.png') }}" alt="Logo" class="AgendaBeauty">
     </div>
     <div class="right-side">
-      <img src="/frontEnd/imagens/florLotus.png" alt="Flor de Lótus" class="logo-lotus">
+      <img src="{{ asset('imagens/florLotus.png') }}" alt="Flor de Lótus" class="logo-lotus">
       <h2>Agendamento de Serviço</h2>
       <!-- Step 1: Selecionar salão -->
       <div class="step active" id="step-1">
         <label for="salao">Selecione o Salão:</label>
         <select id="salao">
           <option value="">escolha um salão:</option>
-          <option value="1" data-nome="Salão Beleza & Cia">Salão Beleza & Cia</option>
-          <option value="2" data-nome="Studio Elegante">Studio Elegante</option>
+          @foreach ($empresas as $empresa)
+          <option value="{{ $empresa->id }}" data-nome="{{ $empresa->nome }}">{{ $empresa->nome }}</option>
+          @endforeach
         </select>
         <div class="buttons">
           <div></div>
@@ -141,10 +142,11 @@
       <div class="step" id="step-2">
         <label for="servico">Escolha o Serviço:</label>
         <select id="servico">
-          <option value="">escolha um serviço</option>
-          <option value="Corte Feminino" data-duracao="30 min" data-valor="R$50">Corte Feminino - 30 min - R$50</option>
-          <option value="Escova" data-duracao="45 min" data-valor="R$40">Escova - 45 min - R$40</option>
-          <option value="Manicure" data-duracao="40 min" data-valor="R$35">Manicure - 40 min - R$35</option>
+          @foreach ($servicos as $servico)
+            <option value="{{ $servico->nome }}" data-duracao="{{ $servico->duracao }} min" data-valor="R${{ $servico->preco }}">
+            {{ $servico->nome }} - {{ $servico->duracao }} min - R${{ $servico->preco }}
+            </option>
+          @endforeach
         </select>
         <div class="buttons">
           <button type="button" class="btn" onclick="prevStep()">Voltar</button>
@@ -157,9 +159,9 @@
         <select id="profissional">
           <option value="">escolha um profissional*</option>
           <option value="Sem preferência">Sem preferência</option>
-          <option value="Ana Souza">Profissional 1</option>
-          <option value="Carlos Silva">Profissional 2</option>
-          <option value="Juliana Lima">Profissional 3</option>
+        @foreach ($funcionarios as $func)
+          <option value="{{ $func->nome }}">{{ $func->nome }}</option>
+        @endforeach
         </select>
         <div class="buttons">
           <button type="button" class="btn" onclick="prevStep()">Voltar</button>

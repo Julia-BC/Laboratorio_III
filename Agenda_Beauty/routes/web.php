@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AgendamentoController;
 use App\Http\Controllers\Auth\FuncionarioController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
@@ -18,22 +19,21 @@ Route::get('/', function () {
 });
 
 // Aliases usados na home -> redirecionar para o login e cadastro
-Route::get('/login', fn() => redirect()->route('cliente.login.form'))->name('login');
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login'); //formulário de login
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit'); //submissão do login
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+// Cadastro
 Route::get('/cadastro', fn() => redirect()->route('cliente.register.form'))->name('cadastro');
+
 
 
 //ROTAS CLIENTE
 Route::prefix('cliente')->group(function () {
     
-    // Login
-    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login'); //formulário de login
-    Route::post('/login', [LoginController::class, 'login'])->name('login.submit'); //submissão do login
-    // Cadastro
+    //CADASTRO
     Route::get('/register', [ClienteAuthController::class, 'showRegisterForm'])->name('cliente.register.form'); //formulário de cadastro
     Route::post('/register', [ClienteAuthController::class, 'register'])->name('cliente.register.submit'); //submissão do cadastro
-    //logout
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-    
+
     //Dashboard (autenticado) -> Rotas protegidas = apenas clientes autenticados podem acessar
     Route::middleware('auth:cliente')->group(function () {
 
@@ -41,6 +41,9 @@ Route::prefix('cliente')->group(function () {
         Route::get('/minha-conta', [ClienteAuthController::class, 'showConta'])->name('cliente.conta'); // Exibe a conta do cliente
         Route::post('/minha-conta', [ClienteAuthController::class, 'atualizarConta'])->name('cliente.conta.atualizar'); // Atualiza a conta do cliente
         Route::delete('/minha-conta/excluir', [ClienteAuthController::class, 'excluirConta'])->name('cliente.conta.excluir'); // excluir a conta do cliente
+        // Exibe os agendamentos do cliente
+        Route::get('/agendamentos', [AgendamentoController::class, 'index'])->name('agendamentos');
+        Route::get('/servicos', [AgendamentoController::class, 'index']);
     
     });
 
@@ -55,14 +58,9 @@ Route::prefix('cliente')->group(function () {
 //ROTAS EMPRESA
 Route::prefix('empresa')->group(function () {
     
-    // Login
-    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login'); //formulário de login
-    Route::post('/login', [LoginController::class, 'login'])->name('login.submit'); //submissão do login
-    // Cadastro 
+    //Cadastro
     Route::get('/register', [EmpresaAuthController::class, 'showRegisterForm'])->name('empresa.register'); // Formulário de cadastro
     Route::post('/register', [EmpresaAuthController::class, 'register'])->name('empresa.register.submit'); // Submissão do cadastro
-    //logout
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     // Dashboard empresa (autenticado) -> Rotas protegidas = apenas empresas autenticadas podem acessar
     Route::middleware('auth:empresa')->group(function () {
@@ -90,7 +88,7 @@ Route::prefix('empresa')->group(function () {
         Route::post('funcionarios', [FuncionarioController::class, 'store'])->name('empresa.funcionarios.cadastrar');
         // Editar funcionário (pode ser com modal ou página separada)
         Route::get('funcionarios/{id}/editar', [FuncionarioController::class, 'edit'])->name('empresa.funcionarios.editar');
-
+        
         // Atualizar funcionário (página ou modal de edição)
         Route::put('funcionarios/{id}', [FuncionarioController::class, 'update'])->name('empresa.funcionarios.atualizar');
 
@@ -116,4 +114,3 @@ Route::post('/esqueci-senha', [ForgotPasswordController::class, 'sendResetLinkEm
 Route::get('/resetar-senha/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 //4.Envio da nova senha
 Route::post('/resetar-senha', [ResetPasswordController::class, 'reset'])->name('password.update');
-

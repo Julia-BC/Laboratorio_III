@@ -29,7 +29,7 @@ class LoginController extends Controller
 
         // Verifica se o e-mail pertence a um cliente
         if ($cliente = Cliente::where('email', $email)->first()) {
-            if (Auth::guard('cliente')->attempt(['email' => $email, 'senha' => $senha])) {
+            if (Auth::guard('cliente')->attempt(['email' => $email, 'password' => $senha])) {
                 if (is_null($cliente->email_verified_at)) {
                     Auth::guard('cliente')->logout();
                     return back()->withErrors(['email' => 'Você precisa verificar seu e-mail.']);
@@ -58,8 +58,11 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::guard('cliente')->logout();
-        Auth::guard('empresa')->logout();
+        if (Auth::guard('cliente')->check()) {
+            Auth::guard('cliente')->logout();
+        } elseif (Auth::guard('empresa')->check()) {
+            Auth::guard('empresa')->logout();
+        }
 
         return redirect('/login')->with('success', 'Logout realizado com sucesso!');
     }
