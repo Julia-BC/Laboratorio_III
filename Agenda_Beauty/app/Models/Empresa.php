@@ -36,4 +36,5 @@ class Empresa extends Authenticatable implements MustVerifyEmail
     {
         return $this->senha;
     }
+    
 }

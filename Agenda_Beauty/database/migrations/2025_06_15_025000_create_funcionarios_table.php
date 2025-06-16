@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('empresa_id'); // FK
             $table->string('nome');
-            $table->string('cpf')->unique();
+            // $table->string('cpf')->unique();
             $table->string('email')->unique();
-            $table->string('telefone');
+            // $table->string('telefone');
             $table->timestamps();
             $table->string('especialidade')->nullable();
 
