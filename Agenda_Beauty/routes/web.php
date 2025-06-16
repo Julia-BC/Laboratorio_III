@@ -86,6 +86,7 @@ Route::prefix('empresa')->group(function () {
 
         Route::get('funcionarios', [FuncionarioController::class, 'index'])->name('funcionario.conta'); // Exibe os funcionário
 
+        // Cadastrar funcionário
         Route::post('funcionarios', [FuncionarioController::class, 'store'])->name('empresa.funcionarios.cadastrar');
         // Editar funcionário (pode ser com modal ou página separada)
         Route::get('funcionarios/{id}/editar', [FuncionarioController::class, 'edit'])->name('empresa.funcionarios.editar');
