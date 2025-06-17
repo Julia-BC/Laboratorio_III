@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Agendamento Completo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
   <style>
     body {
@@ -115,6 +116,12 @@
       }
     }
   </style>
+
+<!-- Adicionando o SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+   <link rel="shortcut icon" href="{{ asset('imagens/favicon.ico') }}" type="image/x-icon">
+
 </head>
 <body>
   <div class="container">
@@ -123,6 +130,8 @@
     </div>
     <div class="right-side">
       <img src="{{ asset('imagens/florLotus.png') }}" alt="Flor de Lótus" class="logo-lotus">
+      <form id="formAgendamento" action="{{ route('agendamentos.store') }}" method="POST">
+        @csrf
       <h2>Agendamento de Serviço</h2>
       <!-- Step 1: Selecionar salão -->
       <div class="step active" id="step-1">
@@ -191,11 +200,17 @@
       <div class="step" id="step-5">
         <h3>Confirme seu agendamento:</h3>
         <div class="summary" id="resumo"></div>
+         <input type="hidden" name="empresa_id" id="inputSalao">
+          <input type="hidden" name="servico_nome"          id="inputServico">
+          <input type="hidden" name="funcionario_nome"          id="inputProfissional">
+          <input type="hidden" name="data" id="inputData">
+          <input type="hidden" name="hora" id="inputHora">
         <div class="buttons">
           <button type="button" class="btn" onclick="prevStep()">Voltar</button>
-          <button type="button" class="btn" onclick="confirmar()">Confirmar</button>
+          <button type="submit" class="btn">Confirmar</button>
         </div>
       </div>
+    </form>
     </div>
   </div>
   <script>
@@ -204,107 +219,120 @@
 
     // Define data mínima para hoje no campo data
     document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('formAgendamento');
       const dataInput = document.getElementById('data');
+
+      // Define a data mínima como hoje
       if (dataInput) {
         dataInput.min = new Date().toISOString().split('T')[0];
       }
-      showStep(currentStep);
-    });
+
+      if (form) {
+        form.addEventListener('submit', function(event) {
+          prepararEnvio();
+        });
+      }
+});
 
     function showStep(step) {
-      document.querySelectorAll('.step').forEach((div) => {
-        div.classList.remove('active');
-      });
-      document.getElementById(`step-${step}`).classList.add('active');
-    }
+    document.querySelectorAll('.step').forEach((div) => {
+      div.classList.remove('active');
+    });
+    document.getElementById(`step-${step}`).classList.add('active');
+  }
 
-    function nextStep() {
-      if (!validarStep(currentStep)) return;
+  function nextStep() {
+    if (!validarStep(currentStep)) return;
+
       if (currentStep < 5) {
-        currentStep++;
-        if (currentStep === 5) {
-          preencherResumo();
-        }
-        showStep(currentStep);
+      currentStep++;
+      showStep(currentStep);
+
+      if (currentStep === 5) {
+      mostrarResumo();
       }
     }
+  }
 
-    function prevStep() {
-      if (currentStep > 1) {
-        currentStep--;
-        showStep(currentStep);
+  function prevStep() {
+    if (currentStep > 1) {
+      currentStep--;
+      showStep(currentStep);
+    }
+  }
+
+  
+  function validarStep(step) {
+    if (step === 1) {
+      const salao = document.getElementById('salao').value;
+      if (!salao) {
+        alert('Por favor, selecione um salão.');
+        return false;
       }
     }
-
-    function validarStep(step) {
-      if (step === 1) {
-        const salao = document.getElementById('salao').value;
-        if (!salao) {
-          alert('Por favor, selecione um salão.');
-          return false;
-        }
+    if (step === 2) {
+      const servico = document.getElementById('servico').value;
+      if (!servico) {
+        alert('Por favor, selecione um serviço.');
+        return false;
       }
-      if (step === 2) {
-        const servico = document.getElementById('servico').value;
-        if (!servico) {
-          alert('Por favor, selecione um serviço.');
-          return false;
-        }
-      }
-      if (step === 3) {
-        const profissional = document.getElementById('profissional').value;
-        if (!profissional) {
-          alert('Por favor, selecione um profissional.');
-          return false;
-        }
-      }
-      if (step === 4) {
-        const data = document.getElementById('data').value;
-        const hora = document.getElementById('hora').value;
-        if (!data || !hora) {
-          alert('Por favor, selecione data e hora.');
-          return false;
-        }
-      }
-      return true;
     }
-
-    function preencherResumo() {
-      const salaoSelect = document.getElementById('salao');
-      const servicoSelect = document.getElementById('servico');
-      const profissionalSelect = document.getElementById('profissional');
-      const dataInput = document.getElementById('data');
-      const horaSelect = document.getElementById('hora');
-
-      const salaoNome = salaoSelect.options[salaoSelect.selectedIndex].dataset.nome;
-      const servicoNome = servicoSelect.value;
-      const duracao = servicoSelect.options[servicoSelect.selectedIndex].dataset.duracao;
-      const valor = servicoSelect.options[servicoSelect.selectedIndex].dataset.valor;
-      const profissional = profissionalSelect.value;
-      const data = dataInput.value;
-      const hora = horaSelect.value;
-
-      document.getElementById('resumo').innerHTML = `
-        <strong>Salão:</strong> ${salaoNome} <br/>
-        <strong>Serviço:</strong> ${servicoNome} (${duracao}) - ${valor} <br/>
-        <strong>Profissional:</strong> ${profissional} <br/>
-        <strong>Data:</strong> ${data} <br/>
-        <strong>Hora:</strong> ${hora}
-      `;
+    if (step === 3) {
+      const profissional = document.getElementById('profissional').value;
+      if (!profissional) {
+        alert('Por favor, selecione um profissional.');
+        return false;
+      }
     }
+    if (step === 4) {
+      const data = document.getElementById('data').value;
+      const hora = document.getElementById('hora').value;
+      if (!data || !hora) {
+        alert('Por favor, selecione data e hora.');
+        return false;
+      }
+    }
+    return true;
+  }
 
-    function confirmar() {
-      alert('Agendamento confirmado! Muito obrigado.');
+  function mostrarResumo() {
+    const salaoSelect = document.getElementById('salao');
+    const servicoSelect = document.getElementById('servico');
+    const profissionalSelect = document.getElementById('profissional');
+    const dataInput = document.getElementById('data');
+    const horaSelect = document.getElementById('hora');
+    
+    const resumoDiv = document.getElementById('resumo');
+    
+    // Dados selecionados
+    const nomeSalao = salaoSelect.options[salaoSelect.selectedIndex].text;
+    const nomeServico = servicoSelect.options[servicoSelect.selectedIndex].text;
+    const nomeProfissional = profissionalSelect.value || 'Sem preferência';
+    const data = dataInput.value;
+    const hora = horaSelect.value;
+
+  resumoDiv.innerHTML = `
+    <p><strong>Salão:</strong> ${nomeSalao}</p>
+    <p><strong>Serviço:</strong> ${nomeServico}</p>
+    <p><strong>Profissional:</strong> ${nomeProfissional}</p>
+    <p><strong>Data:</strong> ${data}</p>
+    <p><strong>Hora:</strong> ${hora}</p>
+  `;
+}
+
+  function prepararEnvio() {
+    // Preenche os campos ocultos antes de enviar
+    document.getElementById('inputSalao').value = document.getElementById('salao').value;
+    document.getElementById('inputServico').value = document.getElementById('servico').value;
+    document.getElementById('inputProfissional').value = document.getElementById('profissional').value;
+    document.getElementById('inputData').value = document.getElementById('data').value;
+    document.getElementById('inputHora').value = document.getElementById('hora').value;
+  }
       // Aqui você pode enviar os dados para o backend via fetch/ajax ou formulário
       // Para exemplo, só vamos resetar o formulário:
-      currentStep = 1;
-      showStep(currentStep);
-      document.getElementById('salao').value = '';
-      document.getElementById('servico').value = '';
-      document.getElementById('profissional').value = '';
-      document.getElementById('data').value = '';
-      document.getElementById('hora').value = '';
-    }
   </script>
+
+@include('components.alerts') <!-- Incluindo o componente de alertas -->
+
 </body>
 </html>

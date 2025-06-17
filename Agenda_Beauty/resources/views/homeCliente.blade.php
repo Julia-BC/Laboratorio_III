@@ -59,6 +59,17 @@
 
     }
 
+    .foto-perfil {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: contain;
+      padding: 15px;
+      background: #fff;
+      border: 3px solid #7f91aa;
+      cursor: pointer; /* opcional para indicar que é clicável */
+}
+
 </style>
 </head>
 <body>
@@ -73,10 +84,10 @@
       <h2>Olá, {{ $Cliente->nome }}</h2>
 
       <div class="foto-perfil">
-        <form action="upload_foto.php" method="post" enctype="multipart/form-data">
+        <form action="{{ route('cliente.uploadFoto') }}" method="post" enctype="multipart/form-data">
+          @csrf
           <label for="fotoInput">
-            <img src="?php echo htmlspecialchars($fotoPerfil ?? '/frontEnd/imagens/default-profile.png'); ?>" alt="fotoPerfil" 
-            class="foto-perfil" id="fotoPerfil" onclick="document.getElementById('fotoInput').click()"/>
+            <img src="{{ $Cliente->foto_perfil ? asset('storage/' . $Cliente->foto_perfil) : asset('imagens/cameraFotoPerfil.png') }}" alt="Foto de perfil" class="foto-perfil" />
           </label>
           <input type="file" name="nova_foto" id="fotoInput" style="display: none;" onchange="this.form.submit()"/>
         </form>

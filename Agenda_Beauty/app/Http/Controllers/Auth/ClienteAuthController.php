@@ -99,6 +99,24 @@ class ClienteAuthController extends Controller
         return view('gerenciarContaCliente', compact('Cliente')); // retorna a view da conta do cliente com os dados do cliente autenticado
     }
 
+    public function uploadFoto(Request $request)
+{
+    $request->validate([
+        'foto' => 'required|image|max:2048', // 2MB máx
+    ]);
+
+    $cliente = auth()->user(); // ou Cliente::find($id)
+
+    // Salva a imagem
+    $caminho = $request->file('foto')->store('fotos', 'public');
+
+    // Atualiza o caminho no banco
+    $cliente->foto_perfil = $caminho;
+    $cliente->save();
+
+    return back()->with('success', 'Foto atualizada!');
+}
+
     // atualiza os dados do cliente
     public function atualizarConta(Request $request)
     {

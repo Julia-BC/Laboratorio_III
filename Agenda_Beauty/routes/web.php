@@ -39,12 +39,13 @@ Route::prefix('cliente')->group(function () {
 
         Route::get('/dashboard', [ClienteAuthController::class, 'index'])->name('homeCliente'); // Dashboard do cliente
         Route::get('/minha-conta', [ClienteAuthController::class, 'showConta'])->name('cliente.conta'); // Exibe a conta do cliente
+        Route::post('/cliente/foto', [ClienteAuthController::class, 'uploadFoto'])->name('cliente.uploadFoto');
         Route::post('/minha-conta', [ClienteAuthController::class, 'atualizarConta'])->name('cliente.conta.atualizar'); // Atualiza a conta do cliente
         Route::delete('/minha-conta/excluir', [ClienteAuthController::class, 'excluirConta'])->name('cliente.conta.excluir'); // excluir a conta do cliente
         // Exibe os agendamentos do cliente
         Route::get('/agendamentos', [AgendamentoController::class, 'index'])->name('agendamentos');
         Route::get('/servicos', [AgendamentoController::class, 'index']);
-    
+        Route::post('/agendamentos', [AgendamentoController::class, 'store'])->name('agendamentos.store');
     });
 
     // Verificação de e-mail -> rotas que exigem cliente autenticado e link assinado
