@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Cliente;
+use App\Models\Agendamento;
 use App\Traits\VerifiesEmail; // Importa o trait para verificação de e-mail
 
 class ClienteAuthController extends Controller
@@ -23,6 +24,7 @@ class ClienteAuthController extends Controller
     public function register(Request $request)
     {
         //validação dos dados enviados
+        //Recebe os dados
         $request->validate([
             'nome' => 'required|string|max:255',
             'cpf' => 'required|string|unique:clientes,cpf',
@@ -30,7 +32,7 @@ class ClienteAuthController extends Controller
             'telefone' => 'required|string|max:20',
             'senha' => 'required|string|min:6|confirmed',
         ], [ 
-            // mensagens de erro personalizadas
+            // mensagens de erro personalizadas = validação
             'nome.required' => 'O nome é obrigatório.',
             'cpf.required' => 'O CPF é obrigatório.',
             'email.required' => 'O e-mail é obrigatório.',
@@ -187,6 +189,17 @@ class ClienteAuthController extends Controller
 
         return redirect()->route('login')->with('success', 'Conta excluída com sucesso!');
     }
+
+    public function mostrarAtendimentos()
+{
+    $clienteId = auth()->id(); // ou auth('cliente')->id(); se tiver guard específico
+
+    $agendamentos = Agendamento::with(['cliente', 'empresa', 'funcionario', 'servico'])
+        ->where('cliente_id', $clienteId)
+        ->get();
+
+    return view('atendimentosClientes', compact('agendamentos'));
+}
 
 
 

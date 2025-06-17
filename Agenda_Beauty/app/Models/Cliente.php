@@ -6,7 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-//permite autenticação de usuário que já está configurado com guard 'cli'
+//permite autenticação de usuário que já está configurado com guard 'cliente'
 class Cliente extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;

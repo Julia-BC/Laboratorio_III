@@ -55,8 +55,22 @@
       cursor: pointer;
       transition: all 0.3s ease;
       width: 200px;
-
     }
+
+    .foto-perfil {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover; /* Alterado para ' para melhor ajuste */
+      background: #fff;
+      border: 3px solid #7f91aa;
+      cursor: pointer;
+      padding: 15px; /* Mantém o espaçamento, se necessário */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
 </style>
 <body>
      <div class="container">
@@ -71,8 +85,9 @@
 
       <div class="foto-perfil">
         <form action="upload_foto.php" method="post" enctype="multipart/form-data">
+          @csrf
           <label for="fotoInput">
-            <img src="?php echo htmlspecialchars($fotoPerfil ?? '/frontEnd/imagens/default-profile.png'); ?>" alt="fotoPerfil" 
+            <img src="{{ $empresa->foto_perfil ? asset('storage/' . $empresa->foto_perfil) : asset('imagens/cameraFotoPerfil.png') }}"
             class="foto-perfil" id="fotoPerfil" onclick="document.getElementById('fotoInput').click()"/>
           </label>
           <input type="file" name="nova_foto" id="fotoInput" style="display: none;" onchange="this.form.submit()"/>

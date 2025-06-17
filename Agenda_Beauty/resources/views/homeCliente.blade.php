@@ -63,11 +63,14 @@
       width: 100px;
       height: 100px;
       border-radius: 50%;
-      object-fit: contain;
-      padding: 15px;
+      object-fit: cover;
       background: #fff;
       border: 3px solid #7f91aa;
       cursor: pointer; /* opcional para indicar que é clicável */
+      padding: 20;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 }
 
 </style>
@@ -84,20 +87,20 @@
       <h2>Olá, {{ $Cliente->nome }}</h2>
 
       <div class="foto-perfil">
-        <form action="{{ route('cliente.uploadFoto') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('cliente.uploadFoto') }}"  method="post" enctype="multipart/form-data">
           @csrf
           <label for="fotoInput">
-            <img src="{{ $Cliente->foto_perfil ? asset('storage/' . $Cliente->foto_perfil) : asset('imagens/cameraFotoPerfil.png') }}" alt="Foto de perfil" class="foto-perfil" />
+            <img src="{{ $Cliente->foto_perfil ? asset('storage/' . $Cliente->foto_perfil) : asset('imagens/cameraFotoPerfil.png') }}" alt="Foto de perfil" class="foto-perfil"/>
           </label>
           <input type="file" name="nova_foto" id="fotoInput" style="display: none;" onchange="this.form.submit()"/>
         </form>
       </div>
       <div class="botoes">
          <a href="{{ route('cliente.conta') }}"><button class="btn"> Minha Conta</button></a>
-        <a href="{{ route('agendamentos') }}"><button class="btn">Agendar Atendimento</button></a>
-        <button class="btn">Meus Atendimentos</button>
+         <a href="{{ route('agendamentos') }}"><button class="btn">Agendar Atendimento</button></a>
+         <a href="{{ route('meusAtendimentos') }}"><button class="btn">Meus Atendimentos</button></a>
         <a href="{{ route('login') }}"><button class="btn">Sair</button></a>
-        </div>
+      </div>
     </div>
   </div>
 </body>

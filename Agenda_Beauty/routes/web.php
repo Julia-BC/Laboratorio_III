@@ -43,9 +43,14 @@ Route::prefix('cliente')->group(function () {
         Route::post('/minha-conta', [ClienteAuthController::class, 'atualizarConta'])->name('cliente.conta.atualizar'); // Atualiza a conta do cliente
         Route::delete('/minha-conta/excluir', [ClienteAuthController::class, 'excluirConta'])->name('cliente.conta.excluir'); // excluir a conta do cliente
         // Exibe os agendamentos do cliente
+
+        //Agendamentos
         Route::get('/agendamentos', [AgendamentoController::class, 'index'])->name('agendamentos');
-        Route::get('/servicos', [AgendamentoController::class, 'index']);
         Route::post('/agendamentos', [AgendamentoController::class, 'store'])->name('agendamentos.store');
+        Route::get('/meus-agendamentos', [AgendamentoController::class, 'mostrarAtendimentos'])->name('meusAtendimentos');
+        Route::get('/agendamentos/{id}/edit', [AgendamentoController::class, 'edit'])->name('agendamentos.edit');
+        Route::put('/agendamentos/{id}', [AgendamentoController::class, 'update'])->name('agendamentos.update');
+        Route::delete('/agendamentos/{id}', [AgendamentoController::class, 'destroy'])->name('agendamentos.destroy');
     });
 
     // Verificação de e-mail -> rotas que exigem cliente autenticado e link assinado

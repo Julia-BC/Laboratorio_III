@@ -128,16 +128,6 @@
     <input type="password" id="senhaEmpresa_confirmation" name="senhaEmpresa_confirmation" placeholder="Confirme sua senha da empresa" required>
   </div>
   
-  <!-- FORMULÁRIO FUNCIONÁRIO -->
-  <!--<div id="form-funcionario" style="display: none;">
-    <input type="text" id="nomeFuncionario" name="nomeFuncionario" placeholder="Digite o nome do funcionário" required>
-    <input type="text" id="cpfFuncionario" name="CPFFuncionario" placeholder="Digite o CPF do funcionário: 000.000.000-00" required>
-    <input type="email" id="emailFuncionario" name="emailFuncionario" placeholder="Digite o e-mail do funcionário" required>
-    <input type="text" id="telefoneFuncionario" name="telefoneFuncionario" placeholder="Digite o telefone do funcionário" required>
-    <input type="password" id="senhaFuncionario" name="senhaFuncionario" placeholder="Digite a senha do funcionário">
-    <input type="password" id="confirmarSenhaFuncionario" name="confirmarSenhaFuncionario" placeholder="Confirme a senha do funcionário">
-  </div>-->
-  
   <div class="botoes">
     <button type="submit" class="btn">Cadastrar</button>
   </div>

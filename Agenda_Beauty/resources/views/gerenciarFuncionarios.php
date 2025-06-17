@@ -4,11 +4,6 @@
   <meta charset="UTF-8">
   <title>Gerenciar Funcionários</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD:Agenda_Beauty/resources/views/gerenciarFuncionarios.html
-  <link rel="stylesheet" href="{{ asset('css/gerenciarFuncionarios.css') }}">
- <!-- Adicionando o SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-=======
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   <style>
     body {
@@ -159,102 +154,21 @@
         font-size: 14px;
       }
     }
-  </style>
 
+  </style>
   <!-- Adicionando o SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
->>>>>>> baa09642e31c114aed0bf4735a444e5c6eb53aaa:Agenda_Beauty/resources/views/gerenciarFuncionarios.blade.php
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-   <link rel="shortcut icon" href="{{ asset('imagens/favicon.ico') }}" type="image/x-icon">
+  <link rel="shortcut icon" href="{{ asset('imagens/favicon.ico') }}" type="image/x-icon">
 </head>
 
 <body>
   <div class="container">
     <div class="left-side">
-<<<<<<< HEAD:Agenda_Beauty/resources/views/gerenciarFuncionarios.html
-      <img src=" {{ asset('imagens/AgendaBeauty.png') }}" alt="Logo" class="AgendaBeauty">
-    </div>
-    <div class="right-side">
-      <img src="{{ asset('imagens/florLotus.png') }}" alt="Flor de Lótus" class="logo-lotus">
-     <h2>Gerenciar Funcionários</h2>
-    
-    <button class="btn add-btn" onclick="document.getElementById('modal').style.display='block'">+ Cadastrar Funcionário</button>
-
-  <div id="modal" class="modal" style="display:none;">
-      <h3>Cadastrar Funcionário</h3>
-      <form action="{{ route('empresa.funcionarios.cadastrar') }}" method="POST">
-        @csrf
-        <input type="text" name="nome" placeholder="Nome" required class="info-input"><br><br>
-        <input type="text" name="email" placeholder="Email" required class="info-input"><br><br>
-        <input type="text" name="telefone" placeholder="Telefone" required class="info-input"><br><br>
-        <input type="text" name="cpf" placeholder="CPF" required class="info-input"><br><br>
-        <input type="text" name="especialidade" placeholder="Especialidade" class="info-input"><br><br>
-        <button type="submit" class="btn">Cadastrar</button>
-        <button type="button" class="btn" onclick="document.getElementById('modal').style.display='none'">Fechar</button>
-      </form>
-    </div>
-    </div>
-
-    <!-- Tabela de funcionários -->
-  <table>
-    <thead>
-      <tr>
-        <th>CPF</th>
-        <th>Nome</th>
-        <th>Email</th>
-        <th>Telefone</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach($funcionarios as $funcionario)
-      <tr>
-        <td>{{ $funcionario->cpf }}</td>
-        <td>{{ $funcionario->nome }}</td>
-        <td>{{ $funcionario->email }}</td>
-        <td>{{ $funcionario->telefone }}</td>
-        <td>{{ $funcionario->especialidade }}</td>
-        <td>
-          <a href="{{ route('empresa.funcionarios.editar', $funcionario->id) }}" class="btn">Editar</a>
-        </td>
-        <td
-        <form action="{{ isset($funcionarioEditar) ? route('empresa.funcionarios.atualizar', $funcionarioEditar->id) : route('empresa.funcionarios.cadastrar') }}" method="POST">
-    @csrf
-    
-          <form action="{{ route('empresa.funcionarios.excluir', $funcionario->id) }}" method="POST" style="display:inline;">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn" onclick="return confirm('Deseja realmente excluir?')">Excluir</button>
-          </form>
-        </td>
-        </tr>
-      @endforeach
-    </tbody>
-  </table>
-        <!-- <?php
-        // Conexão com banco de dados
-        // include('conexao.php');
-
-        // $sql = "SELECT * FROM funcionarios";
-        // $resultado = mysqli_query($conn, $sql);
-
-        // while ($linha = mysqli_fetch_assoc($resultado)) {
-        //   echo "<tr>";
-        //   echo "<td>" . $linha['nome'] . "</td>";
-        //   echo "<td>" . $linha['email'] . "</td>";
-        //   echo "<td>" . $linha['telefone'] . "</td>";
-        //   echo "<td>
-        //           <a href='editar_funcionario.php?id=" . $linha['id'] . "' class='btn'>Editar</a>
-        //         </td>";
-        //   echo "</tr>";
-        // }
-        // ?> -->
-      </tbody>
-    </table>
-=======
       <img src="{{ asset('imagens/AgendaBeauty.png') }}" alt="Logo" class="AgendaBeauty">
     </div>
     <div class="right-side">
+      <img src="{{ asset('imagens/florLotus.png') }}" alt="Flor de Lótus" class="logo-lotus">
       <h2>Gerenciar Funcionários</h2>
       <button class="btn" onclick="abrirModal()">Adicionar Funcionário</button>
       <table>
@@ -267,7 +181,7 @@
           </tr>
         </thead>
         <tbody id="lista-funcionarios">
-          @foreach($funcionarios as $funcionario)
+          @forelse($funcionarios as $funcionario)
             <tr>
               <td>{{ $funcionario->nome }}</td>
               <td>{{ $funcionario->especialidade }}</td>
@@ -277,35 +191,34 @@
                 <form action="{{ route('empresa.funcionarios.excluir', $funcionario->id) }}" method="POST" style="display:inline;">
                   @csrf
                   @method('DELETE')
-                  <button type="submit" class="btn danger" onclick="return confirm('Deseja realmente excluir?')">Excluir</button>
+                  <button type="submit" class="btn danger">Excluir</button>
                 </form>
               </td>
             </tr>
-          @endforeach
+          @empty
+          @endforelse
         </tbody>
       </table>
     </div>
->>>>>>> baa09642e31c114aed0bf4735a444e5c6eb53aaa:Agenda_Beauty/resources/views/gerenciarFuncionarios.blade.php
   </div>
 
-  <!-- Modal de cadastro/edição -->
   <div class="modal" id="modal-funcionario">
     <div class="modal-content">
-      <button class="close-modal" onclick="fecharModal()">&times;</button>
+      <button class="close-modal" onclick="fecharModal()">×</button>
       <h3 id="titulo-modal">Cadastrar Funcionário</h3>
       <form id="form-funcionario" action="{{ route('empresa.funcionarios.cadastrar') }}" method="POST">
         @csrf
-        <input type="hidden" id="edit-index">
+        <input type="hidden" id="edit-id" name="id">
         <label for="nome">Nome:</label>
         <input type="text" id="nome" name="nome" required>
         <label>Cargos:</label>
         <div class="checkbox-group" id="cargos-checkboxes">
           <label><input type="checkbox" name="cargo[]" value="Cabeleireira"> Cabeleireira</label>
           <label><input type="checkbox" name="cargo[]" value="Manicure"> Manicure</label>
-            <label><input type="checkbox" name="cargo[]" value="Pedicure"> Pedicure</label>
+          <label><input type="checkbox" name="cargo[]" value="Pedicure"> Pedicure</label>
           <label><input type="checkbox" name="cargo[]" value="Depiladora"> Depiladora</label>
           <label><input type="checkbox" name="cargo[]" value="Maquiadora"> Maquiadora</label>
-            <label><input type="checkbox" name="cargo[]" value="Esteticista"> Esteticista</label>
+          <label><input type="checkbox" name="cargo[]" value="Esteticista"> Esteticista</label>
         </div>
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required>
@@ -317,94 +230,32 @@
     </div>
   </div>
   <script>
-    let funcionarios = [];
-
     function abrirModal() {
       document.getElementById('modal-funcionario').classList.add('active');
       document.getElementById('form-funcionario').reset();
-      document.getElementById('edit-index').value = '';
+      document.getElementById('edit-id').value = '';
       document.getElementById('titulo-modal').innerText = 'Cadastrar Funcionário';
       document.querySelectorAll('#cargos-checkboxes input[type="checkbox"]').forEach(cb => cb.checked = false);
     }
 
-
     function editarFuncionario(id, nome, especialidade, email) {
-      const form = document.getElementById('form-funcionario');
-      const modal = document.getElementById('modal-funcionario');
-
-      // Preenche os campos do formulário
+      document.getElementById('modal-funcionario').classList.add('active');
       document.getElementById('nome').value = nome;
       document.getElementById('email').value = email;
-
-      // Desmarca todos os checkboxes e marca os da especialidade
       const especialidades = especialidade.split(',').map(e => e.trim());
-      document.querySelectorAll('#cargos-checkboxes input[type="checkbox"]').forEach(cb     => {
+      document.querySelectorAll('#cargos-checkboxes input[type="checkbox"]').forEach(cb => {
         cb.checked = especialidades.includes(cb.value);
       });
-
-      // Altera o título e o action do formulário
       document.getElementById('titulo-modal').innerText = 'Editar Funcionário';
-      form.action = `/empresa/funcionarios/${id}/atualizar`;
-
-      // Adiciona os métodos necessários
-      let methodInput = form.querySelector('input[name="_method"]');
+      document.getElementById('form-funcionario').action = `{{ route('empresa.funcionarios.atualizar', ['id' => ':id']) }}`.replace(':id', id);
+      document.getElementById('edit-id').value = id;
+      let methodInput = document.querySelector('input[name="_method"]');
       if (!methodInput) {
         methodInput = document.createElement('input');
         methodInput.type = 'hidden';
         methodInput.name = '_method';
         methodInput.value = 'PUT';
-        form.appendChild(methodInput);
-      }
-    }
-
-    function salvarFuncionario(event) {
-      event.preventDefault();
-      const nome = document.getElementById('nome').value;
-      const email = document.getElementById('email').value;
-      const cargos = Array.from(document.querySelectorAll('input[name="cargo[]"]:checked')).map(cb => cb.value);
-      const index = document.getElementById('edit-index').value;
-
-      if (!cargos.length) {
-        alert('Selecione pelo menos um cargo.');
-        return;
-      }
-
-      const funcionario = { nome, cargos, email };
-
-      if (index === '') {
-        funcionarios.push(funcionario);
-      } else {
-        funcionarios[index] = funcionario;
-      }
-
-      renderizarFuncionarios();
-      fecharModal();
-    }
-
-    function renderizarFuncionarios() {
-      const tbody = document.getElementById('lista-funcionarios');
-      tbody.innerHTML = '';
-      funcionarios.forEach((f, i) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${f.nome}</td>
-          <td>${f.cargos.join(', ')}</td>
-          <td>${f.email}</td>
-          <td>
-            <button class="btn" onclick="editarFuncionario(this)">Editar</button>
-            <button class="btn danger" onclick="excluirFuncionario(this)">Excluir</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function excluirFuncionario(btn) {
-      const tr = btn.closest('tr');
-      const index = Array.from(tr.parentNode.children).indexOf(tr);
-      if(confirm('Tem certeza que deseja excluir este funcionário?')) {
-        funcionarios.splice(index, 1);
-        renderizarFuncionarios();
+        document.getElementById('form-funcionario').appendChild(methodInput);
       }
     }
 
@@ -412,9 +263,28 @@
       document.getElementById('modal-funcionario').classList.remove('active');
     }
 
+    document.querySelectorAll('.btn.danger[type="submit"]').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        Swal.fire({
+          title: 'Tem certeza?',
+          text: 'Deseja realmente excluir este funcionário?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#7f91aa',
+          confirmButtonText: 'Sim, excluir!',
+          cancelButtonText: 'Cancelar'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.form.submit();
+          }
+        });
+      });
+    });
   </script>
 
-@include('components.alerts') <!-- Incluindo o componente de alertas -->
+  @include('components.alerts') <!-- Incluindo o componente de alertas -->
 
 </body>
 </html>

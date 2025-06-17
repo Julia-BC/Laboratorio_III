@@ -9,7 +9,7 @@ class FuncionarioController extends Controller
 {
     public function index()
     {
-        $empresaId = auth()->id(); // ou auth('empresa')->id() se for guard separado
+        $empresaId = auth('empresa')->id(); // ou auth('empresa')->id() se for guard separado
         $funcionarios = Funcionario::where('empresa_id', $empresaId)->get();
         return view('gerenciarFuncionarios', compact('funcionarios'));
     }
@@ -24,9 +24,8 @@ class FuncionarioController extends Controller
 
         $request->validate([
             'nome' => 'required|string|max:100',
-            'cpf' => 'unique:funcionarios,cpf',
-            // 'telefone' => 'required',
             'cargo' => 'nullable|array',
+            'email' => 'required|email|unique:funcionarios,email',
         ]);
 
         $especialidade = $request->cargo ? implode(', ', $request->cargo) : null;
@@ -34,8 +33,6 @@ class FuncionarioController extends Controller
         Funcionario::create([
             'nome' => $request->nome,
             'email' => $request->email,
-            // 'cpf' => $request->cpf,
-            // 'telefone' => $request->telefone,
             'especialidade' => $especialidade,
             'empresa_id' => auth('empresa')->id(),
         ]);
@@ -44,11 +41,10 @@ class FuncionarioController extends Controller
     }
 
     public function edit($id)
-    {
-        $funcionarioEditar = Funcionario::findOrFail($id);
-        $funcionarios = Funcionario::where('empresa_id', auth('empresa')->id())->get();
-        return view('gerenciarFuncionarios', compact('funcionarios', 'funcionarioEditar'));
-    }
+{
+    $funcionario = Funcionario::where('id', $id)->where('empresa_id', auth('empresa')->id())->firstOrFail();
+    return response()->json($funcionario);
+}
 
     public function atualizar(Request $request, $id)
 {
@@ -62,23 +58,28 @@ class FuncionarioController extends Controller
 }
 
     public function update(Request $request, $id)
-    {
-        $funcionario = Funcionario::findOrFail($id);
+{
+    $funcionario = Funcionario::findOrFail($id);
 
-        $request->validate([
-            'nome' => 'required|string|max:100',
-            'telefone' => 'required',
-            'especialidade' => 'nullable|string',
-        ]);
+    $request->validate([
+        'nome' => 'required|string|max:100',
+        'email' => 'required|email|unique:funcionarios,email,' . $id,
+        'cargo' => 'nullable|array',
+    ]);
 
-        $funcionario->update($request->only(['nome', 'telefone', 'especialidade']));
+    $funcionario->update([
+        'nome' => $request->nome,
+        'email' => $request->email,
+        'especialidade' => $request->cargo ? implode(', ', $request->cargo) : $funcionario->especialidade,
+    ]);
 
-        return redirect()->route('funcionario.conta')->with('success', 'Funcionário atualizado com sucesso.');
-    }
+    return redirect()->back()->with('success', 'Funcionário atualizado com sucesso!');
+}
 
     public function destroy($id)
-    {
-        Funcionario::destroy($id);
-        return redirect()->back()->with('success', 'Funcionário excluído com sucesso.');
-    }
+{
+    $funcionario = Funcionario::where('id', $id)->where('empresa_id', auth('empresa')->id())->firstOrFail();
+    $funcionario->delete();
+    return redirect()->back()->with('success', 'Funcionário excluído com sucesso.');
+}
 }
