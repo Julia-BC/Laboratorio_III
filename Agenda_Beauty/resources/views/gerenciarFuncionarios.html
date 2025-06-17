@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <title>Gerenciar Funcionários</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD:Agenda_Beauty/resources/views/gerenciarFuncionarios.html
+  <link rel="stylesheet" href="{{ asset('css/gerenciarFuncionarios.css') }}">
+ <!-- Adicionando o SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+=======
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   <style>
     body {
@@ -158,12 +163,95 @@
 
   <!-- Adicionando o SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+>>>>>>> baa09642e31c114aed0bf4735a444e5c6eb53aaa:Agenda_Beauty/resources/views/gerenciarFuncionarios.blade.php
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
    <link rel="shortcut icon" href="{{ asset('imagens/favicon.ico') }}" type="image/x-icon">
 </head>
+
 <body>
   <div class="container">
     <div class="left-side">
+<<<<<<< HEAD:Agenda_Beauty/resources/views/gerenciarFuncionarios.html
+      <img src=" {{ asset('imagens/AgendaBeauty.png') }}" alt="Logo" class="AgendaBeauty">
+    </div>
+    <div class="right-side">
+      <img src="{{ asset('imagens/florLotus.png') }}" alt="Flor de Lótus" class="logo-lotus">
+     <h2>Gerenciar Funcionários</h2>
+    
+    <button class="btn add-btn" onclick="document.getElementById('modal').style.display='block'">+ Cadastrar Funcionário</button>
+
+  <div id="modal" class="modal" style="display:none;">
+      <h3>Cadastrar Funcionário</h3>
+      <form action="{{ route('empresa.funcionarios.cadastrar') }}" method="POST">
+        @csrf
+        <input type="text" name="nome" placeholder="Nome" required class="info-input"><br><br>
+        <input type="text" name="email" placeholder="Email" required class="info-input"><br><br>
+        <input type="text" name="telefone" placeholder="Telefone" required class="info-input"><br><br>
+        <input type="text" name="cpf" placeholder="CPF" required class="info-input"><br><br>
+        <input type="text" name="especialidade" placeholder="Especialidade" class="info-input"><br><br>
+        <button type="submit" class="btn">Cadastrar</button>
+        <button type="button" class="btn" onclick="document.getElementById('modal').style.display='none'">Fechar</button>
+      </form>
+    </div>
+    </div>
+
+    <!-- Tabela de funcionários -->
+  <table>
+    <thead>
+      <tr>
+        <th>CPF</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Telefone</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach($funcionarios as $funcionario)
+      <tr>
+        <td>{{ $funcionario->cpf }}</td>
+        <td>{{ $funcionario->nome }}</td>
+        <td>{{ $funcionario->email }}</td>
+        <td>{{ $funcionario->telefone }}</td>
+        <td>{{ $funcionario->especialidade }}</td>
+        <td>
+          <a href="{{ route('empresa.funcionarios.editar', $funcionario->id) }}" class="btn">Editar</a>
+        </td>
+        <td
+        <form action="{{ isset($funcionarioEditar) ? route('empresa.funcionarios.atualizar', $funcionarioEditar->id) : route('empresa.funcionarios.cadastrar') }}" method="POST">
+    @csrf
+    
+          <form action="{{ route('empresa.funcionarios.excluir', $funcionario->id) }}" method="POST" style="display:inline;">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn" onclick="return confirm('Deseja realmente excluir?')">Excluir</button>
+          </form>
+        </td>
+        </tr>
+      @endforeach
+    </tbody>
+  </table>
+        <!-- <?php
+        // Conexão com banco de dados
+        // include('conexao.php');
+
+        // $sql = "SELECT * FROM funcionarios";
+        // $resultado = mysqli_query($conn, $sql);
+
+        // while ($linha = mysqli_fetch_assoc($resultado)) {
+        //   echo "<tr>";
+        //   echo "<td>" . $linha['nome'] . "</td>";
+        //   echo "<td>" . $linha['email'] . "</td>";
+        //   echo "<td>" . $linha['telefone'] . "</td>";
+        //   echo "<td>
+        //           <a href='editar_funcionario.php?id=" . $linha['id'] . "' class='btn'>Editar</a>
+        //         </td>";
+        //   echo "</tr>";
+        // }
+        // ?> -->
+      </tbody>
+    </table>
+=======
       <img src="{{ asset('imagens/AgendaBeauty.png') }}" alt="Logo" class="AgendaBeauty">
     </div>
     <div class="right-side">
@@ -197,6 +285,7 @@
         </tbody>
       </table>
     </div>
+>>>>>>> baa09642e31c114aed0bf4735a444e5c6eb53aaa:Agenda_Beauty/resources/views/gerenciarFuncionarios.blade.php
   </div>
 
   <!-- Modal de cadastro/edição -->
