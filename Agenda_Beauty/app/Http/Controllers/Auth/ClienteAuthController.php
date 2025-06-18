@@ -54,7 +54,7 @@ class ClienteAuthController extends Controller
 
         $this->sendVerificationEmail($Cliente); // Envia o e-mail de verificação
 
-        return redirect()->route('login')->with('success', 'Cadastro cliente realizado! Faça login.');
+        return redirect()->route('login')->with('success', 'Cadastro cliente realizado! Verifique seu email para fazer login.');
     }
 
     //exibe o formulário de login do cliente

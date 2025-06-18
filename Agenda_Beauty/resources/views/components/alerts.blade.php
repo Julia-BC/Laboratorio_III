@@ -48,6 +48,7 @@
 @endif
 
 {{-- ALERTAS VISUAIS BACKUP (caso SweetAlert não carregue) --}}
+<noscript>
 <div style="margin-top: 10px; text-align: center;">
     @if (session('status'))
         <div style="color: #00ff88;">{{ session('status') }}</div>
@@ -69,5 +70,5 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 </div>
-
+</noscript>
 

@@ -23,7 +23,7 @@ class Empresa extends Authenticatable implements MustVerifyEmail
         'bairro',
         'complemento',
         'senha',
-        
+        'foto_perfil',
     ];
     
     // campos ocultos ao transformar o modelo em array/JSON

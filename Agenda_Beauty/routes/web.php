@@ -72,9 +72,9 @@ Route::prefix('empresa')->group(function () {
     Route::middleware('auth:empresa')->group(function () {
 
         Route::get('/dashboard', [EmpresaAuthController::class, 'index'])->name('homeEmpresa'); // Dashboard da empresa
-        Route::get('/minha-conta', [EmpresaAuthController::class, 'showConta'])->name('empresa.conta'); // Exibe a conta do cliente
-        Route::post('/minha-conta', [EmpresaAuthController::class, 'atualizarConta'])->name('empresa.conta.atualizar'); // Atualiza a conta do cliente
-        Route::delete('/minha-conta/excluir', [EmpresaAuthController::class, 'excluirConta'])->name('empresa.conta.excluir'); // excluir a conta do cliente
+        Route::get('/minha-conta', [EmpresaAuthController::class, 'showConta'])->name('empresa.conta'); // Exibe a conta da empresa
+        Route::post('/minha-conta', [EmpresaAuthController::class, 'atualizarConta'])->name('empresa.conta.atualizar'); // Atualiza a conta da empresa
+        Route::delete('/minha-conta/excluir', [EmpresaAuthController::class, 'excluirConta'])->name('empresa.conta.excluir'); // excluir a conta da empresa
     });
 
     // Verificação de e-mail

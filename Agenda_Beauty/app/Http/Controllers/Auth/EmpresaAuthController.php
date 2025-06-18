@@ -63,7 +63,7 @@ class EmpresaAuthController extends Controller
         
         $this->sendVerificationEmail($empresa); // Envia o e-mail de verificação
 
-        return redirect()->route('login')->with('success', 'Cadastro empresa realizado! Faça login.');
+        return redirect()->route('login')->with('success', 'Cadastro empresa realizado! Verifique seu email para fazer login.');
     }
 
     // Exibe o formulário de login da empresa
