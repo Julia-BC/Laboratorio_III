@@ -1,4 +1,4 @@
-# 💄 Agenda Beauty
+# Agenda Beauty
 
 Sistema web de **gestão de agendamentos para salões de beleza**, desenvolvido como projeto acadêmico da faculdade.
 
