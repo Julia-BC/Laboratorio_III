@@ -2,13 +2,6 @@
 
 Sistema web de **gestão de agendamentos para salões de beleza**, desenvolvido como projeto acadêmico da faculdade.
 
-<p align="center">
-  <img src="src/assets/preview.png" alt="Prévia do projeto Agenda Beauty" width="800">
-</p>
-
-## 🌐 Projeto publicado  
-🔗 Em breve
-
 ## 📎 Documentação acadêmica do projeto 
 https://docs.google.com/document/d/16pt3SNUak1Y1YssNK1PpRea97YlItbtbYqUp3Mh-2_4/edit?usp=sharing
 
